@@ -128,6 +128,8 @@ int nDevPresent=0;
 /** bit is index in VL53L0XDevs that is not necessary the dev id of the BSP */
 int nDevMask;
 
+int INT_flag=0;
+
 VL53L0X_Dev_t VL53L0XDevs[]={
         {.Id=XNUCLEO53L0A1_DEV_LEFT, .DevLetter='l', .I2cHandle=&hi2c3, .I2cDevAddr=0x52},
         {.Id=XNUCLEO53L0A1_DEV_CENTER, .DevLetter='c', .I2cHandle=&hi2c3, .I2cDevAddr=0x52},
@@ -365,7 +367,22 @@ void Sensor_SetNewRange(VL53L0X_Dev_t *pDev, VL53L0X_RangingMeasurementData_t *p
         pDev->LeakyFirst = 1;
     }
 }
+int OwnDemo(int UseSensorsMask, RangingConfig_e rangingConfig)
+{
+    int status;
+    int i;
+    for(i=0; i<3; i++)
+    {
+        if( ! VL53L0XDevs[i].Present)
+            continue;
 
+    status = VL53L0X_SetDeviceMode(&VL53L0XDevs[i], VL53L0X_DEVICEMODE_CONTINUOUS_RANGING);
+	if (status == VL53L0X_ERROR_NONE)
+        status = VL53L0X_StartMeasurement(&VL53L0XDevs[i]);
+    if( status != VL53L0X_ERROR_NONE )
+        HandleError(ERR_DEMO_RANGE_MULTI);
+    }
+}
 /**
  * Implement the ranging demo with all modes managed through the blue button (short and long press)
  * This function implements a while loop until the blue button is pressed
@@ -406,7 +423,7 @@ int RangeDemo(int UseSensorsMask, RangingConfig_e rangingConfig)
                 HandleError(ERR_DEMO_RANGE_MULTI);
             }
             /* Push data logging to UART */
-            trace_printf("%d,%u,%d,%d,%d\n", VL53L0XDevs[i].Id, TimeStamp_Get(), RangingMeasurementData.RangeStatus, RangingMeasurementData.RangeMilliMeter, RangingMeasurementData.SignalRateRtnMegaCps);
+            // trace_printf("%d,%u,%d,%d,%d\n", VL53L0XDevs[i].Id, TimeStamp_Get(), RangingMeasurementData.RangeStatus, RangingMeasurementData.RangeMilliMeter, RangingMeasurementData.SignalRateRtnMegaCps);
             /* Store new ranging distance */
             Sensor_SetNewRange(&VL53L0XDevs[i],&RangingMeasurementData);
         }
@@ -700,24 +717,32 @@ int main(void)
   /* Set VL53L0X API trace level */
   VL53L0X_trace_config(NULL, TRACE_MODULE_NONE, TRACE_LEVEL_NONE, TRACE_FUNCTION_NONE); // No Trace
   //VL53L0X_trace_config(NULL,TRACE_MODULE_ALL, TRACE_LEVEL_ALL, TRACE_FUNCTION_ALL); // Full trace
-
+// moze tutaj: VL53L0X_ResetDevice, zeby te device normalnie sobie ten adres brały?
   InitSensors();
   SetupSingleShot(RangingConfig);
 
-
-//  HAL_TIM_Base_Start_IT(&htim10);
+(void)OwnDemo(UseSensorsMask, LONG_RANGE);
+ HAL_TIM_Base_Start_IT(&htim10);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//	  __WFI();
+	  __WFI();
 
 
-
-	  (void)RangeDemo(UseSensorsMask, LONG_RANGE);
-	  HAL_Delay(1000);
+  // if(INT_flag)
+  // {
+  //   INT_flag = 0;
+  //   for(int i=0; i<3; i++){
+  //           if( ! VL53L0XDevs[i].Present  || (UseSensorsMask & (1<<i))==0 )
+  //               continue;
+  //       trace_printf("%d,%u,%d,%d,%d\n", VL53L0XDevs[i].Id, TimeStamp_Get(), RangingMeasurementData.RangeStatus, RangingMeasurementData.RangeMilliMeter, RangingMeasurementData.SignalRateRtnMegaCps);
+  //     }
+  // }
+	//   (void)OwnDemo(UseSensorsMask, LONG_RANGE);
+	//   HAL_Delay(1000);
 
 
 	  /* Display demo mode */
@@ -945,7 +970,7 @@ static void MX_TIM10_Init(void)
   htim10.Instance = TIM10;
   htim10.Init.Prescaler = 9999;
   htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim10.Init.Period = 8399;
+  htim10.Init.Period = 524;
   htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim10.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim10) != HAL_OK)
@@ -1063,12 +1088,37 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  if (htim == &htim10) {
-	  (void)RangeDemo(UseSensorsMask, LONG_RANGE); // hall delay 2 blocking doesnt work in callback
+    if (htim == &htim10) {
+	//   (void)RangeDemo(UseSensorsMask, LONG_RANGE); // hall delay 2 blocking doesnt work in callback
+    // INT_flag = 1;
 	  // obecnie można zrobić z flagą i wydajność zbadać przy pomocy analizatora.
+        for(int i=0; i<3; i++)
+        {
+            if( ! VL53L0XDevs[i].Present)
+                continue;
+            uint8_t isReady = 0;
+            VL53L0X_Error status =  VL53L0X_GetMeasurementDataReady(&VL53L0XDevs[i], &isReady);
+            if (status == VL53L0X_ERROR_NONE)
+            {
+                if (isReady)
+                {
+                    status = VL53L0X_GetRangingMeasurementData(&VL53L0XDevs[i],
+                        &RangingMeasurementData);
 
-//	  __HAL_TIM_ENABLE(&htim10);
-  }
+
+                    if (status == VL53L0X_ERROR_NONE)
+                        status = VL53L0X_ClearInterruptMask(&VL53L0XDevs[i], 0);
+
+                    if (status == VL53L0X_ERROR_NONE)
+                        Sensor_SetNewRange(&VL53L0XDevs[i],&RangingMeasurementData);
+                }
+                else
+                {
+                   __NOP(); 
+                }
+            }
+        }
+    }
 }
 /* USER CODE END 4 */
 
