@@ -395,8 +395,6 @@ int RangeDemo(int UseSensorsMask, RangingConfig_e rangingConfig)
         return -1;
     }
 
-
-    /* Start ranging until blue button is pressed */
     if( nSensorToUse >1 ){
         /* Multiple devices */
         for( i=0; i<3; i++){
