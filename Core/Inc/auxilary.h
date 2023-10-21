@@ -11,4 +11,5 @@
 #include "main.h"
 void Check_I2c_Channel(I2C_HandleTypeDef* channel);
 
+
 #endif /* INC_AUXILARY_H_ */

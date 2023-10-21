@@ -6,11 +6,6 @@
  */
 #include "auxilary.h"
 #include "vl53l0x_platform_log.h"
-//	GPIOA->BSRR ^= (1 << 5);
-//	for(volatile int i = 0; i < 15600; i++) {}
-//	GPIOA->BSRR ^= (1 << (5+16));
-//
-//
 
 void Check_I2c_Channel(I2C_HandleTypeDef* channel)
 {
@@ -163,5 +158,35 @@ void AlarmDemo(void){
     /* Disable configuration of BSP/MCU center sensor interrupt */
     XNUCLEO53L0A1_SetIntrStateId(0, XNUCLEO53L0A1_DEV_CENTER);
     VL53L0A1_EXTI_IOUnconfigure(XNUCLEO53L0A1_DEV_CENTER);
+}
+#endif
+// from while loop
+#if HAVE_ALARM_DEMO
+      XNUCLEO53L0A1_SetDisplayString(TxtAlarm);
+      HAL_Delay(ModeChangeDispTime);
+      ResetAndDetectSensor(0);
+      AlarmDemo();
+#else
+#endif
+#if HAVE_ALARM_DEMO
+volatile int IntrCount;
+volatile int LastIntrPin;
+volatile int LastIntrId;
+volatile int IntrCounts[3];
+#endif
+
+#if HAVE_ALARM_DEMO
+/**
+ * Interrupt handler called each time an interrupt is produced by the ranging sensor (in ALARM mode)
+ * @param err
+ */
+void VL53L0A1_EXTI_Callback(int DevNo, int GPIO_Pin){
+    IntrCount++;
+    LastIntrPin=GPIO_Pin;
+    LastIntrId=DevNo;
+
+    if( DevNo< ARRAY_SIZE(IntrCounts)  ){
+        IntrCounts[DevNo]++;
+    }
 }
 #endif
