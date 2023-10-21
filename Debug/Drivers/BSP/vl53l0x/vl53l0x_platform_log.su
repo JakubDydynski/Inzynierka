@@ -1,0 +1,2 @@
+../Drivers/BSP/vl53l0x/vl53l0x_platform_log.c:36:9:VL53L0X_trace_config	32	static
+../Drivers/BSP/vl53l0x/vl53l0x_platform_log.c:48:6:trace_print_module_function	36	static

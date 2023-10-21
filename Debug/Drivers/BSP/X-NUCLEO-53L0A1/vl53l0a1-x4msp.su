@@ -1,0 +1,5 @@
+../Drivers/BSP/X-NUCLEO-53L0A1/vl53l0a1-x4msp.c:37:14:VL53L0A1_EXTI_Callback	16	static
+../Drivers/BSP/X-NUCLEO-53L0A1/vl53l0a1-x4msp.c:376:6:HAL_GPIO_EXTI_Callback	16	static
+../Drivers/BSP/X-NUCLEO-53L0A1/vl53l0a1-x4msp.c:435:6:EXTI9_5_IRQHandler	8	static
+../Drivers/BSP/X-NUCLEO-53L0A1/vl53l0a1-x4msp.c:450:6:EXTI15_10_IRQHandler	8	static
+../Drivers/BSP/X-NUCLEO-53L0A1/vl53l0a1-x4msp.c:455:6:VL53L0A1_EXTI_Init	48	static

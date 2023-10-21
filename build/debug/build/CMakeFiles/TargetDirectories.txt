@@ -1,0 +1,3 @@
+C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/build/debug/build/CMakeFiles/STM32F401Nucleo-VL6180X.dir
+C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/build/debug/build/CMakeFiles/edit_cache.dir
+C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/build/debug/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,216 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineSystem.cmake:204 (message)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      The system is: Windows - 10.0.22621 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+      Compiler: C:/ST/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-gcc.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      1
+      c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\arm-none-eabi\\bin\\ld.exe: c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib\\libc.a(lib_a-exit.o): in function `exit':
+      exit.c:(.text.exit+0x2c): undefined reference to `_exit'
+      collect2.exe: error: ld returned 1 exit status
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: C:/ST/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-gcc.exe 
+      Build flags: 
+      Id flags: -c 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+      
+      The C compiler identification is GNU, found in:
+        C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/build/CMakeFiles/3.26.1/CompilerIdC/CMakeCCompilerId.o
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+      Compiler: C:/ST/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-g++.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      1
+      c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\arm-none-eabi\\bin\\ld.exe: c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib\\libc.a(lib_a-exit.o): in function `exit':
+      exit.c:(.text.exit+0x2c): undefined reference to `_exit'
+      collect2.exe: error: ld returned 1 exit status
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: C:/ST/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-g++.exe 
+      Build flags: 
+      Id flags: -c 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.o"
+      
+      The CXX compiler identification is GNU, found in:
+        C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/build/CMakeFiles/3.26.1/CompilerIdCXX/CMakeCXXCompilerId.o
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:1102 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineASMCompiler.cmake:127 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Checking whether the ASM compiler is GNU using "--version" matched "(GNU assembler)|(GCC)|(Free Software Foundation)":
+      arm-none-eabi-gcc.exe (GNU Tools for STM32 10.3-2021.10.20211105-1100) 10.3.1 20210824 (release)
+      Copyright (C) 2020 Free Software Foundation, Inc.
+      This is free software; see the source for copying conditions.  There is NO
+      warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/build/CMakeFiles/CMakeScratch/TryCompile-e04sta"
+      binary: "C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/build/CMakeFiles/CMakeScratch/TryCompile-e04sta"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/build/CMakeFiles/CMakeScratch/TryCompile-e04sta
+        
+        Run Build Command(s):C:/ninja-win/ninja.exe -v cmTC_964f3 && [1/2] C:\\ST\\STM32CubeCLT\\GNU-tools-for-STM32\\bin\\arm-none-eabi-gcc.exe   -v -o CMakeFiles/cmTC_964f3.dir/CMakeCCompilerABI.c.obj -c "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeCCompilerABI.c"
+        Using built-in specs.
+        COLLECT_GCC=C:\\ST\\STM32CubeCLT\\GNU-tools-for-STM32\\bin\\arm-none-eabi-gcc.exe
+        Target: arm-none-eabi
+        Configured with: /build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/src/gcc/configure --build=x86_64-linux-gnu --host=x86_64-w64-mingw32 --target=arm-none-eabi --prefix=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw --libexecdir=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/lib --infodir=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --enable-mingw-wildcard --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/arm-none-eabi --with-libiconv-prefix=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/build-mingw/host-libs/usr --with-gmp=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/build-mingw/host-libs/usr --with-mpfr=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/build-mingw/host-libs/usr --with-mpc=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/build-mingw/host-libs/usr --with-isl=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/build-mingw/host-libs/usr --with-libelf=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for STM32 10.3-2021.10.20211105-1100' --with-multilib-list=rmprofile,aprofile
+        Thread model: single
+        Supported LTO compression algorithms: zlib
+        gcc version 10.3.1 20210824 (release) (GNU Tools for STM32 10.3-2021.10.20211105-1100) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_964f3.dir/CMakeCCompilerABI.c.obj' '-c' '-mcpu=arm7tdmi' '-mfloat-abi=soft' '-marm' '-mlibarch=armv4t' '-march=armv4t'
+         c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/cc1.exe -quiet -v -iprefix c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\bin\\../lib/gcc/arm-none-eabi/10.3.1/ -isysroot c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\bin\\../arm-none-eabi -D__USES_INITFINI__ C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mcpu=arm7tdmi -mfloat-abi=soft -marm -mlibarch=armv4t -march=armv4t -auxbase-strip CMakeFiles/cmTC_964f3.dir/CMakeCCompilerABI.c.obj -version -o C:\\Users\\Jakub\\AppData\\Local\\Temp\\cctSkfZU.s
+        GNU C17 (GNU Tools for STM32 10.3-2021.10.20211105-1100) version 10.3.1 20210824 (release) (arm-none-eabi)
+        	compiled by GNU C version 7.3-win32 20180312, GMP version 6.1.0, MPFR version 3.1.4, MPC version 1.0.3, isl version isl-0.18-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring duplicate directory "c:/st/stm32cubeclt/gnu-tools-for-stm32/lib/gcc/../../lib/gcc/arm-none-eabi/10.3.1/include"
+        ignoring nonexistent directory "c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\bin\\../arm-none-eabi/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/lib/gcc/arm-none-eabi/10.3.1/../../../../include"
+        ignoring duplicate directory "c:/st/stm32cubeclt/gnu-tools-for-stm32/lib/gcc/../../lib/gcc/arm-none-eabi/10.3.1/include-fixed"
+        ignoring duplicate directory "c:/st/stm32cubeclt/gnu-tools-for-stm32/lib/gcc/../../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/include"
+        ignoring nonexistent directory "c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\bin\\../arm-none-eabi/usr/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\bin\\../lib/gcc/arm-none-eabi/10.3.1/include
+         c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\bin\\../lib/gcc/arm-none-eabi/10.3.1/include-fixed
+         c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\bin\\../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/include
+        End of search list.
+        GNU C17 (GNU Tools for STM32 10.3-2021.10.20211105-1100) version 10.3.1 20210824 (release) (arm-none-eabi)
+        	compiled by GNU C version 7.3-win32 20180312, GMP version 6.1.0, MPFR version 3.1.4, MPC version 1.0.3, isl version isl-0.18-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        Compiler executable checksum: 63dc17b0c14aab4cf1c67a314bcde1e5
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_964f3.dir/CMakeCCompilerABI.c.obj' '-c' '-mcpu=arm7tdmi' '-mfloat-abi=soft' '-marm' '-mlibarch=armv4t' '-march=armv4t'
+         c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/bin/as.exe -v -march=armv4t -mfloat-abi=soft -meabi=5 -o CMakeFiles/cmTC_964f3.dir/CMakeCCompilerABI.c.obj C:\\Users\\Jakub\\AppData\\Local\\Temp\\cctSkfZU.s
+        GNU assembler version 2.36.1 (arm-none-eabi) using BFD version (GNU Tools for STM32 10.3-2021.10.20211105-1100) 2.36.1.20210621
+        COMPILER_PATH=c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/;c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/;c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/bin/
+        LIBRARY_PATH=c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/;c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/;c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/;c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../arm-none-eabi/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_964f3.dir/CMakeCCompilerABI.c.obj' '-c' '-mcpu=arm7tdmi' '-mfloat-abi=soft' '-marm' '-mlibarch=armv4t' '-march=armv4t'\x0d
+        [2/2] cmd.exe /C "cd . && C:\\ST\\STM32CubeCLT\\GNU-tools-for-STM32\\bin\\arm-none-eabi-gcc.exe  -v CMakeFiles/cmTC_964f3.dir/CMakeCCompilerABI.c.obj -o cmTC_964f3.exe -Wl,--out-implib,libcmTC_964f3.dll.a -Wl,--major-image-version,0,--minor-image-version,0   && cd ."
+        FAILED: cmTC_964f3.exe 
+        cmd.exe /C "cd . && C:\\ST\\STM32CubeCLT\\GNU-tools-for-STM32\\bin\\arm-none-eabi-gcc.exe  -v CMakeFiles/cmTC_964f3.dir/CMakeCCompilerABI.c.obj -o cmTC_964f3.exe -Wl,--out-implib,libcmTC_964f3.dll.a -Wl,--major-image-version,0,--minor-image-version,0   && cd ."
+        Using built-in specs.
+        COLLECT_GCC=C:\\ST\\STM32CubeCLT\\GNU-tools-for-STM32\\bin\\arm-none-eabi-gcc.exe
+        COLLECT_LTO_WRAPPER=c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/lto-wrapper.exe
+        Target: arm-none-eabi
+        Configured with: /build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/src/gcc/configure --build=x86_64-linux-gnu --host=x86_64-w64-mingw32 --target=arm-none-eabi --prefix=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw --libexecdir=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/lib --infodir=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --enable-mingw-wildcard --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/install-mingw/arm-none-eabi --with-libiconv-prefix=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/build-mingw/host-libs/usr --with-gmp=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/build-mingw/host-libs/usr --with-mpfr=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/build-mingw/host-libs/usr --with-mpc=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/build-mingw/host-libs/usr --with-isl=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/build-mingw/host-libs/usr --with-libelf=/build/gnu-tools-for-stm32_10.3-2021.10.20211105-1100/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for STM32 10.3-2021.10.20211105-1100' --with-multilib-list=rmprofile,aprofile
+        Thread model: single
+        Supported LTO compression algorithms: zlib
+        gcc version 10.3.1 20210824 (release) (GNU Tools for STM32 10.3-2021.10.20211105-1100) 
+        COMPILER_PATH=c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/;c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/;c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/bin/
+        LIBRARY_PATH=c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/;c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/;c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/;c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../arm-none-eabi/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_964f3.exe' '-mcpu=arm7tdmi' '-mfloat-abi=soft' '-marm' '-mlibarch=armv4t' '-march=armv4t'
+         c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/collect2.exe -plugin c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/liblto_plugin-0.dll -plugin-opt=c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\Jakub\\AppData\\Local\\Temp\\ccfjKHfV.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc --sysroot=c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\bin\\../arm-none-eabi -X -o cmTC_964f3.exe c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/crti.o c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/crtbegin.o c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/crt0.o -Lc:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1 -Lc:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc -Lc:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib -Lc:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../arm-none-eabi/lib CMakeFiles/cmTC_964f3.dir/CMakeCCompilerABI.c.obj --out-implib libcmTC_964f3.dll.a --major-image-version 0 --minor-image-version 0 --start-group -lgcc -lc --end-group c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/crtend.o c:/st/stm32cubeclt/gnu-tools-for-stm32/bin/../lib/gcc/arm-none-eabi/10.3.1/crtn.o\x0d
+        c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\arm-none-eabi\\bin\\ld.exe: unrecognized option '--major-image-version'\x0d
+        c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\arm-none-eabi\\bin\\ld.exe: use the --help option for usage information\x0d
+        collect2.exe: error: ld returned 1 exit status
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeTestCCompiler.cmake:56 (try_compile)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Check for working C compiler: C:/ST/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-gcc.exe"
+    directories:
+      source: "C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/build/CMakeFiles/CMakeScratch/TryCompile-fkoox4"
+      binary: "C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/build/CMakeFiles/CMakeScratch/TryCompile-fkoox4"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_WORKS"
+      cached: true
+      stdout: |
+        Change Dir: C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/build/CMakeFiles/CMakeScratch/TryCompile-fkoox4
+        
+        Run Build Command(s):C:/ninja-win/ninja.exe -v cmTC_33fb9 && [1/2] C:\\ST\\STM32CubeCLT\\GNU-tools-for-STM32\\bin\\arm-none-eabi-gcc.exe    -o CMakeFiles/cmTC_33fb9.dir/testCCompiler.c.obj -c C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/build/CMakeFiles/CMakeScratch/TryCompile-fkoox4/testCCompiler.c
+        [2/2] cmd.exe /C "cd . && C:\\ST\\STM32CubeCLT\\GNU-tools-for-STM32\\bin\\arm-none-eabi-gcc.exe   CMakeFiles/cmTC_33fb9.dir/testCCompiler.c.obj -o cmTC_33fb9.exe -Wl,--out-implib,libcmTC_33fb9.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+        FAILED: cmTC_33fb9.exe 
+        cmd.exe /C "cd . && C:\\ST\\STM32CubeCLT\\GNU-tools-for-STM32\\bin\\arm-none-eabi-gcc.exe   CMakeFiles/cmTC_33fb9.dir/testCCompiler.c.obj -o cmTC_33fb9.exe -Wl,--out-implib,libcmTC_33fb9.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+        c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\arm-none-eabi\\bin\\ld.exe: unrecognized option '--major-image-version'\x0d
+        c:\\st\\stm32cubeclt\\gnu-tools-for-stm32\\arm-none-eabi\\bin\\ld.exe: use the --help option for usage information\x0d
+        collect2.exe: error: ld returned 1 exit status
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+...
