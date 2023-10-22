@@ -56,6 +56,8 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 #if TRACE_UART
+#	define trace_printff uart_printf_light
+extern void uart_printf_light(const char *msg, uint16_t size);
 #	define trace_printf uart_printf
 extern int uart_printf(const char *msg, ...);
 #else

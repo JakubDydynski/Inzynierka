@@ -10,10 +10,14 @@
 //#define VL53L0X_OsDelay(...) (void)0
 //#define VL53L0X_OsDelay(...) HAL_Delay(2)
 // important os_delay changes so that interrupts may work
+// #define VL53L0X_OsDelay(...) do { \
+// 	GPIOA->BSRR ^= (1 << 5); \
+// for(volatile int i = 0; i < 15600; i++) {} \
+// 	GPIOA->BSRR ^= (1 << (5+16)); }\
+// while(0)
 #define VL53L0X_OsDelay(...) do { \
-	GPIOA->BSRR ^= (1 << 5); \
 for(volatile int i = 0; i < 15600; i++) {} \
-	GPIOA->BSRR ^= (1 << (5+16)); }\
+ }\
 while(0)
 
 #ifndef HAL_I2C_MODULE_ENABLED
