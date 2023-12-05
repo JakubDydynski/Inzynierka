@@ -73,7 +73,25 @@ void Error_Handler(void);
 #define TCK_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
+//#define BLACKPILL
+#ifdef BLACKPILL
+#define HSE_VALUE 25000000u
+#define RCC_CR_HSESEL	RCC_CR_HSEON
 
+#define LED_PORT GPIOC
+#define LED_BIT	13
+
+#else	// Nucleo 64
+#define HSE_VALUE 8000000u
+#define RCC_CR_HSESEL	(RCC_CR_HSEON | RCC_CR_HSEBYP)
+
+
+
+#endif
+
+#define HCLK_FREQ	84000000u
+
+#define LED_MSK	(1u << LED_BIT)
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

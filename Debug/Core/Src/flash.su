@@ -1,0 +1,7 @@
+../Core/Src/flash.c:11:14:flash_pgsize	24	static
+../Core/Src/flash.c:22:16:flash_sn	24	static
+../Core/Src/flash.c:33:7:flash_isblank	24	static
+../Core/Src/flash.c:45:6:flash_erase_page	16	static
+../Core/Src/flash.c:58:6:flash_write16	16	static
+../Core/Src/flash.c:70:6:flash_write32	16	static
+../Core/Src/flash.c:82:6:flash_write64	16	static

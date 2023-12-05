@@ -1,3 +1,4 @@
-../Drivers/BSP/X-NUCLEO-53L0A1/uart_trace.c:21:6:HAL_UART_TxCpltCallback	16	static
-../Drivers/BSP/X-NUCLEO-53L0A1/uart_trace.c:26:5:uart_vprintf	24	static,ignoring_inline_asm
-../Drivers/BSP/X-NUCLEO-53L0A1/uart_trace.c:43:5:uart_printf	16	static,ignoring_inline_asm
+../Drivers/BSP/X-NUCLEO-53L0A1/uart_trace.c:22:6:HAL_UART_TxCpltCallback	16	static
+../Drivers/BSP/X-NUCLEO-53L0A1/uart_trace.c:28:5:uart_vprintf	24	static,ignoring_inline_asm
+../Drivers/BSP/X-NUCLEO-53L0A1/uart_trace.c:45:5:uart_printf	16	static,ignoring_inline_asm
+../Drivers/BSP/X-NUCLEO-53L0A1/uart_trace.c:58:6:uart_printf_light	24	static,ignoring_inline_asm

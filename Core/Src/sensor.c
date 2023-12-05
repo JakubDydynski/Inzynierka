@@ -38,15 +38,15 @@ int LeakyFactorFix8 = (int) (0.6 * 256);
  * Set err on display and loop forever
  * @param err Error case code
  */
-void HandleError(int err)
-{
-	char msg[16];
-	sprintf(msg, "Er%d", err);
-	XNUCLEO53L0A1_SetDisplayString(msg);
-	while (1)
-	{
-	};
-}
+//void HandleError(int err)
+//{
+//	char msg[16];
+//	sprintf(msg, "Er%d", err);
+//	XNUCLEO53L0A1_SetDisplayString(msg);
+//	while (1)
+//	{
+//	};
+//}
 
 VL53L0X_Dev_t VL53L0XDevs[2] =
 {
@@ -325,8 +325,9 @@ void InitSensors(I2C_HandleTypeDef *hi2c, RangingConfig_e rangingConfig)
 	}
 	if ((nDevPresent <= 0))
 	{
-		HandleError(ERR_DETECT);
-	}
+//		HandleError(ERR_DETECT);
+		while(1);
+	};
 
     SetupSingleShot(rangingConfig); // calibration
 }

@@ -23,6 +23,4 @@ void HandleError(int err);
 void Sensor_SetNewRange(VL53L0X_Dev_t *pDev,
 		VL53L0X_RangingMeasurementData_t *pRange);
 
-VL53L0X_Dev_t VL53L0XDevs[2];
-
 #endif /* INC_SENSOR_H_ */

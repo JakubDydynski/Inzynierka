@@ -16,7 +16,7 @@
 #define MIN_OFFSET ((TRAIN_MID_POINT) + 5)
 #define DISTANCE_W_OFFSET (100 + (MIN_OFFSET)*2)
 
-#define V_DELAY(distance) (sqrt(VMAX) - sqrt(2 * ((distance - ((DISTANCE_W_OFFSET) / 2))) * (ACCELERATION)))
+#define V_DELAY(distance) (sqrt(V_MAX) - sqrt(2 * ((distance - ((DISTANCE_W_OFFSET) / 2))) * (ACCELERATION)))
 #define V_ACCELERATION(distance) (sqrt(2*(distance - (MIN_OFFSET))*(ACCELERATION)))
 
 static int calculate_position(int sensor1Distance, int sensor2Distance)

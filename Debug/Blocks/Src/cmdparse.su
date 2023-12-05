@@ -1,0 +1,4 @@
+../Blocks/Src/cmdparse.c:9:21:is_delim	16	static
+../Blocks/Src/cmdparse.c:14:21:is_hex_digit	16	static
+../Blocks/Src/cmdparse.c:20:23:ihex_digit	16	static
+../Blocks/Src/cmdparse.c:27:9:cmd_interpret	48	static

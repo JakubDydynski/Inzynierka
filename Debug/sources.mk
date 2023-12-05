@@ -21,8 +21,10 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Blocks/Src \
 Core/Src \
 Core/Startup \
+DCCCctrl/Src \
 Drivers/BSP/X-NUCLEO-53L0A1 \
 Drivers/BSP/vl53l0x \
 Drivers/STM32F4xx_HAL_Driver/Src \

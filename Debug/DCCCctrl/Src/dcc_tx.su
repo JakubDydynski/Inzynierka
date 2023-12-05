@@ -1,0 +1,14 @@
+../Drivers/CMSIS/Include/core_cm4.h:1762:22:__NVIC_SetPendingIRQ	16	static
+../DCCCctrl/Src/dcc_tx.c:28:13:prepare_idle_packet	4	static
+../DCCCctrl/Src/dcc_tx.c:36:13:prepare_reset_packet	4	static
+../DCCCctrl/Src/dcc_tx.c:62:28:pktdump	16	static
+../DCCCctrl/Src/dcc_tx.c:70:13:storeld	16	static
+../DCCCctrl/Src/dcc_tx.c:77:13:add2pkt	16	static
+../DCCCctrl/Src/dcc_tx.c:85:13:add2pkt1	16	static
+../DCCCctrl/Src/dcc_tx.c:92:13:add2pkt2	16	static
+../DCCCctrl/Src/dcc_tx.c:98:16:mkspeed128	24	static
+../DCCCctrl/Src/dcc_tx.c:111:16:mkspeed28pkt	24	static
+../DCCCctrl/Src/dcc_tx.c:124:16:mkf14pkt	16	static
+../DCCCctrl/Src/dcc_tx.c:135:6:USART6_IRQHandler	24	static
+../DCCCctrl/Src/dcc_tx.c:482:6:dcc_tx_next_bit	8	static
+../DCCCctrl/Src/dcc_tx.c:562:6:init_ctrl_mode	16	static

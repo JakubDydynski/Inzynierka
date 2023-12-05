@@ -1,0 +1,2 @@
+../Core/Src/algorithm.c:22:12:calculate_position	24	static
+../Core/Src/algorithm.c:28:5:calculatePWM	24	static

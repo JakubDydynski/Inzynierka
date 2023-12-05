@@ -21,11 +21,17 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stm32f4yy.h"
+#include "bf_reg.h"
+#include "board.h"
+#include "cmdproc.h"
+#include "config.h"
+#include "dcc_tx.h"
 
 #include <string.h>
 #include "X-NUCLEO-53L0A1.h"
 #include "vl53l0x_api.h"
-#include "sensor.c"
+#include "sensor.h"
 #include <limits.h>
 #include "auxilary.h"
 #include "algorithm.h"
@@ -95,7 +101,7 @@ UART_HandleTypeDef huart2;
 DMA_HandleTypeDef hdma_usart2_tx;
 
 /* USER CODE BEGIN PV */
-
+extern VL53L0X_Dev_t VL53L0XDevs[2];
 /**
  * Global ranging struct
  */
@@ -123,6 +129,136 @@ static void MX_I2C3_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+// analog results
+uint16_t adc_result[AC_NCH];
+uint32_t adcavg[AC_NCH];	// averaging filters
+uint16_t adcval[AC_NCH];	// final readouts
+
+uint16_t isense_max, isenseq_mA;
+
+uint8_t encval;
+
+volatile uint32_t utimer;
+uint32_t msec;
+
+uint16_t signon_timer;
+#define SIGNON_TOUT	1000u	// seconds
+
+void SysTick_Handler(void)
+{
+	if (utimer)
+		--utimer;
+
+	void run_every_ms(void);
+	run_every_ms();
+
+	static uint16_t tdiv;
+
+	if (++tdiv == 1000u)
+	{
+		tdiv = 0;
+
+		LED_PORT->BSRR = LED_MSK << 16 | (~LED_PORT->ODR & LED_MSK);
+		LED_DUTY ^= LED_DIM	^ LED_FULL;
+
+		if (signon_timer)
+			--signon_timer;
+	}
+}
+
+void HAL_Delay(uint32_t ms)
+{
+	for (utimer = ms; utimer;) ;
+}
+
+/*
+ * Configure clock to PLL fed by HSE, 84 MHz, 48 MHz for USB,
+ * both APBs at 42 MHz, timers at 84 MHz
+ */
+static void ClockConfig_F401(void)
+{
+	RCC->CR |= RCC_CR_HSESEL;
+	while (!(RCC->CR & RCC_CR_HSERDY));
+	RCC->PLLCFGR = (RCC->PLLCFGR & RCC_PLLCFGR_RSVD)
+		| RCC_PLLCFGR_PLLSRC_HSE
+		| RCC_PLLCFGR_PLLMV(HSE_VALUE / 1000000u)
+		| RCC_PLLCFGR_PLLNV(336)	// 192 for F411 @ 96 MHz
+		| RCC_PLLCFGR_PLLPV(4)		// 2 for F411 @ 96 MHz
+		| RCC_PLLCFGR_PLLQV(7);		// 4 for F411 @ 96 MHz
+	RCC->CR |= RCC_CR_PLLON;	//
+	// set Flash speed
+	FLASH->ACR = FLASH_ACR_PRFTEN | FLASH_ACR_ICEN | FLASH_ACR_DCEN | FLASH_ACR_LATENCY_2WS;	// 1ws 30..64, 3 ws 90..100
+	while (!(RCC->CR & RCC_CR_PLLRDY));
+
+	RCC->CFGR = RCC_CFGR_PPRE1_DIV2 | RCC_CFGR_PPRE2_DIV2 | RCC_CFGR_SW_PLL;	// APB2, APB1 prescaler = 2
+	//while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL);
+}
+
+
+
+#define APB1_FREQ	(HCLK_FREQ / 2)
+#define CON_BAUD	115200u
+
+void hw_init(void)
+{
+	ClockConfig_F401();
+
+	RCC->AHB1ENR = RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOCEN
+		| RCC_AHB1ENR_GPIODEN | RCC_AHB1ENR_DMA1EN;
+//	RCC->AHB2ENR = RCC_AHB2ENR_OTGFSEN;
+
+	RCC->APB1ENR = RCC_APB1ENR_TIM2EN | RCC_APB1ENR_TIM5EN | RCC_APB1ENR_USART2EN;
+
+	LED_TIM->PSC = HCLK_FREQ / LED_FREQ / LED_STEPS - 1;
+	LED_TIM->ARR = LED_STEPS - 1;
+	LED_TIM->CCR1 = LED_DIM;
+	LED_TIM->CCMR1 = TIM_CCMR1_OC1M_PWM1 | TIM_CCMR1_OC1PE;
+	LED_TIM->BDTR = TIM_BDTR_MOE;
+	LED_TIM->CCER = TIM_CCER_CC1E;
+	//LED_TIM->DIER = TIM_DIER_CC1IE | TIM_DIER_UIE;
+	LED_TIM->CR1 = TIM_CR1_ARPE | TIM_CR1_CEN;
+
+	USART2->BRR = (APB1_FREQ + CON_BAUD / 2) / CON_BAUD;
+	USART2->CR1 = USART_CR1_RE | USART_CR1_TE | USART_CR1_UE | USART_CR1_RXNEIE;
+
+	GPIOA->AFR[0] = (union bf4_){
+		.p0 = AFN_TIM3,	// TIM5CH1 - IN1B
+		.p1 = AFN_TIM3,	// TIM5CH2 - IN2B
+		.p2 = AFN_USART1_2,
+		.p3 = AFN_USART1_2,
+		.p5 = AFN_TIM1_2,	// TIM2CH1 - LED
+	}.w;
+	GPIOA->AFR[1] = (union bf4_){
+		.p11 = AFN_USB,
+		.p12 = AFN_USB,
+	}.w;
+	GPIOA->OSPEEDR |= (union bf2_){
+		.p0 = GPIO_OSPEEDR_HI,
+		.p1 = GPIO_OSPEEDR_HI,
+		.p11 = GPIO_OSPEEDR_HI,
+		.p12 = GPIO_OSPEEDR_HI	// USB
+	}.w;
+	GPIOA->MODER = (union bf2_){
+		.p0 = GPIO_MODER_AF,	// TIM2CH1
+		.p1 = GPIO_MODER_AF,
+		.p2 = GPIO_MODER_AF,	// USART2
+		.p3 = GPIO_MODER_AF,
+		.p5 = GPIO_MODER_AF,
+		.p11 = GPIO_MODER_AF,	// USB
+		.p12 = GPIO_MODER_AF,	// USB
+		.p13 = GPIO_MODER_AF,
+		.p14 = GPIO_MODER_AF,
+	}.w;
+	GPIOA->PUPDR = GPIOA_PUPDR_SWD;
+
+	GPIOC->MODER = (union bf2_){
+		.p1 = GPIO_MODER_OUT,	// ENB
+	}.w;
+
+	NVIC_SetPriority(USART2_IRQn, 12);
+	NVIC_EnableIRQ(USART2_IRQn);
+}
+
 
 void TimeStamp_Reset()
 {
@@ -182,7 +318,8 @@ void OwnDemo(int UseSensorsMask, RangingConfig_e rangingConfig)
 		if (status == VL53L0X_ERROR_NONE)
 			status = VL53L0X_StartMeasurement(&VL53L0XDevs[i]);
 		if (status != VL53L0X_ERROR_NONE)
-			HandleError(ERR_DEMO_RANGE_MULTI);
+//			HandleError(ERR_DEMO_RANGE_MULTI);
+			while(1);
 	}
 }
 
@@ -226,6 +363,20 @@ int main(void)
   MX_TIM10_Init();
   MX_I2C3_Init();
   /* USER CODE BEGIN 2 */
+	hw_init(); // uart conflict // tim5 conflict // gpioa or instead of assign conflict
+
+	// flash write unlock
+	FLASH->KEYR = FLASH_FKEY1;
+	FLASH->KEYR = FLASH_FKEY2;
+
+	SysTick_Config(HCLK_FREQ / 1000u);
+	NVIC_SetPriority(SysTick_IRQn, 11);	// must be higher than command processor priority
+
+	// load config from Flash
+	loadcfg();
+	br_set_mode(cd.n.mode);
+	// init H-bridge operation
+
 
 	uart_printf(WelcomeMsg);
 	HAL_Delay(WelcomeTime);
@@ -588,6 +739,92 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     // trace_printf("%d",calculatePWM(RangingMeasurementData[0].RangeMilliMeter, RangingMeasurementData[1].RangeMilliMeter));
 	}
 }
+
+
+
+// USART2 console ========================================================
+// If command interpreter runs at the same priority as UART interrupt,
+// the buffer must be big enough for the longest message (help text)
+#define OBSIZE	2048
+static char outbuf[OBSIZE];
+static uint16_t obputidx;
+static volatile uint16_t obgetidx;
+
+void con_putchar(char c)
+{
+	uint16_t newputidx = (obputidx + 1) % OBSIZE;
+	if (newputidx != obgetidx)
+	{
+		// buffer not full, put character
+		outbuf[obputidx] = c;
+		__disable_irq();
+		obputidx = newputidx;
+		USART2->CR1 |= USART_CR1_TXEIE;
+		__enable_irq();
+	}
+}
+
+void putstr(const char *s)
+{
+	while (*s)
+		con_putchar(*s++);
+}
+
+_Bool process_input(char c);
+
+void USART2_IRQHandler(void)
+{
+	uint32_t sr = USART2->SR & USART2->CR1 & (USART_CR1_RXNEIE | USART_CR1_TXEIE);	// filter only enabled interrupts
+
+	if (sr & USART_SR_RXNE)
+	{
+		if (!signon_timer)
+		{
+			display_signon();
+			USART2->DR;	// ignore first char
+		}
+		else if (process_input(USART2->DR))
+			display_prompt();
+		signon_timer = SIGNON_TOUT;
+	}
+
+	if (sr & USART_SR_TXE)
+	{
+		// tx ready, something to send
+		uint8_t c = outbuf[obgetidx];
+		if (++obgetidx == OBSIZE)
+			obgetidx = 0;
+		if (obgetidx == obputidx)	// buffer empty
+			USART2->CR1 &= ~USART_CR1_TXEIE;	// disable further TX interrupts
+		USART2->DR = c;	// clears TCIF
+	}
+}
+//========================================================================
+void pktdump(const struct sendpacket_ *p)
+{
+
+}
+
+void hw_boot(void)
+{
+
+}
+
+void adc_control(void)
+{
+
+}
+
+void adc_process(void)
+{
+
+}
+
+void adc_store_csense(void)
+{
+
+}
+
 /* USER CODE END 4 */
 
 /**

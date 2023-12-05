@@ -1,0 +1,12 @@
+../Drivers/CMSIS/Include/core_cm4.h:1688:22:__NVIC_EnableIRQ	16	static
+../Drivers/CMSIS/Include/core_cm4.h:1724:22:__NVIC_DisableIRQ	16	static,ignoring_inline_asm
+../DCCCctrl/Src/dcc_tx_hw.c:32:6:prepare_DCC_bit	16	static
+../DCCCctrl/Src/dcc_tx_hw.c:48:6:prepare_SX_bit	16	static
+../DCCCctrl/Src/dcc_tx_hw.c:56:6:TIM3_IRQHandler	8	static
+../DCCCctrl/Src/dcc_tx_hw.c:72:13:br_init_analog	4	static
+../DCCCctrl/Src/dcc_tx_hw.c:92:6:br_set_mode	16	static
+../DCCCctrl/Src/dcc_tx_hw.c:245:6:br_set_andir	16	static
+../DCCCctrl/Src/dcc_tx_hw.c:255:6:br_set_anduty	16	static
+../DCCCctrl/Src/dcc_tx_hw.c:280:6:br_cutout_start	4	static
+../DCCCctrl/Src/dcc_tx_hw.c:285:6:br_cutout_end	4	static
+../DCCCctrl/Src/dcc_tx_hw.c:327:6:TIM1_CC_IRQHandler	8	static

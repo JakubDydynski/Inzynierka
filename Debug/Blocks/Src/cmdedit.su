@@ -1,0 +1,5 @@
+../Blocks/Src/cmdedit.c:10:6:con_putstr	16	static
+../Blocks/Src/cmdedit.c:16:6:con_put_nl	8	static
+../Blocks/Src/cmdedit.c:22:13:cursor_set_x	24	static
+../Blocks/Src/cmdedit.c:31:20:display_cmdline	16	static
+../Blocks/Src/cmdedit.c:41:7:process_input	32	static

@@ -29,6 +29,15 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
+ ../Core/Inc/stm32f4yy.h ../Core/Inc/stm32yyyy.h ../Core/Inc/stm32util.h \
+ ../Core/Inc/bf_reg.h ../Core/Inc/board.h ../Core/Inc/stm32f4yy.h \
+ ../Core/Inc/dccctrl_config.h \
+ C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/Blocks/Inc/cmdproc.h \
+ C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/DCCCctrl/Inc/cmdi.h \
+ C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/DCCCctrl/Inc/config.h \
+ ../Core/Inc/dccctrl_config.h \
+ C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/DCCCctrl/Inc/dcc_tx.h \
+ C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/DCCCctrl/Inc/config.h \
  ../Drivers/BSP/X-NUCLEO-53L0A1/X-NUCLEO-53L0A1.h \
  ../Drivers/BSP/vl53l0x/vl53l0x_api.h \
  ../Drivers/BSP/vl53l0x/vl53l0x_api_strings.h \
@@ -38,7 +47,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/BSP/X-NUCLEO-53L0A1/vl53l0x_platform.h \
  ../Drivers/BSP/vl53l0x/vl53l0x_def.h \
  ../Drivers/BSP/vl53l0x/vl53l0x_platform_log.h \
- ../Dependencies/stm32xxx_hal.h ../Dependencies/mxconstants.h
+ ../Dependencies/stm32xxx_hal.h ../Dependencies/mxconstants.h \
+ ../Core/Inc/sensor.h ../Core/Inc/auxilary.h ../Core/Inc/main.h \
+ ../Core/Inc/algorithm.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -70,6 +81,19 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
+../Core/Inc/stm32f4yy.h:
+../Core/Inc/stm32yyyy.h:
+../Core/Inc/stm32util.h:
+../Core/Inc/bf_reg.h:
+../Core/Inc/board.h:
+../Core/Inc/stm32f4yy.h:
+../Core/Inc/dccctrl_config.h:
+C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/Blocks/Inc/cmdproc.h:
+C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/DCCCctrl/Inc/cmdi.h:
+C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/DCCCctrl/Inc/config.h:
+../Core/Inc/dccctrl_config.h:
+C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/DCCCctrl/Inc/dcc_tx.h:
+C:/Users/Jakub/Documents/vsc/STM32F401Nucleo-VL6180X/DCCCctrl/Inc/config.h:
 ../Drivers/BSP/X-NUCLEO-53L0A1/X-NUCLEO-53L0A1.h:
 ../Drivers/BSP/vl53l0x/vl53l0x_api.h:
 ../Drivers/BSP/vl53l0x/vl53l0x_api_strings.h:
@@ -81,3 +105,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/BSP/vl53l0x/vl53l0x_platform_log.h:
 ../Dependencies/stm32xxx_hal.h:
 ../Dependencies/mxconstants.h:
+../Core/Inc/sensor.h:
+../Core/Inc/auxilary.h:
+../Core/Inc/main.h:
+../Core/Inc/algorithm.h:

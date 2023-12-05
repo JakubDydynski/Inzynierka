@@ -1,0 +1,5 @@
+../Core/Src/sensor.c:57:13:SetI2C	24	static
+../Core/Src/sensor.c:65:12:ResetId	16	static
+../Core/Src/sensor.c:85:13:SetupSingleShot	56	static
+../Core/Src/sensor.c:220:6:Sensor_SetNewRange	16	static
+../Core/Src/sensor.c:240:6:InitSensors	40	static
