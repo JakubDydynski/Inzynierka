@@ -28,6 +28,7 @@
 #include "sensor.c"
 #include <limits.h>
 #include "auxilary.h"
+#include "algorithm.h"
 
 /* USER CODE END Includes */
 
@@ -38,6 +39,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
 
 /**
  * @defgroup Configuration Static configuration
@@ -97,7 +99,7 @@ DMA_HandleTypeDef hdma_usart2_tx;
 /**
  * Global ranging struct
  */
-VL53L0X_RangingMeasurementData_t RangingMeasurementData;
+VL53L0X_RangingMeasurementData_t RangingMeasurementData[2];
 
 int UseSensorsMask = (1 << XNUCLEO53L0A1_DEV_CENTER)
 		| (1 << XNUCLEO53L0A1_DEV_LEFT);
@@ -564,18 +566,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				if (isReady)
 				{
 					status = VL53L0X_GetRangingMeasurementData(&VL53L0XDevs[i],
-							&RangingMeasurementData);
+							&RangingMeasurementData[i]);
 
 					if (status == VL53L0X_ERROR_NONE)
 						status = VL53L0X_ClearInterruptMask(&VL53L0XDevs[i], 0);
 
 					if (status == VL53L0X_ERROR_NONE)
 						Sensor_SetNewRange(&VL53L0XDevs[i],
-								&RangingMeasurementData);
+								&RangingMeasurementData[i]);
 
-					trace_printf("%d,%d,%d\n", VL53L0XDevs[i].Id, RangingMeasurementData.RangeStatus, RangingMeasurementData.RangeMilliMeter);
+					trace_printf("%d,%d,%d\n", VL53L0XDevs[i].Id, RangingMeasurementData[i].RangeStatus, RangingMeasurementData[i].RangeMilliMeter);
 					// char tab[6];
-					// sprintf(tab, "%d%d%d",VL53L0XDevs[i].Id, RangingMeasurementData.RangeStatus + 48, RangingMeasurementData.RangeMilliMeter);
+					// sprintf(tab, "%d%d%d",VL53L0XDevs[i].Id, RangingMeasurementData[i].RangeStatus + 48, RangingMeasurementData[i].RangeMilliMeter);
 					// debug_printff(tab, 10);
 				} else
 				{
@@ -583,6 +585,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				}
 			}
 		}
+    // trace_printf("%d",calculatePWM(RangingMeasurementData[0].RangeMilliMeter, RangingMeasurementData[1].RangeMilliMeter));
 	}
 }
 /* USER CODE END 4 */
