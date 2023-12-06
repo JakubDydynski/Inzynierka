@@ -326,14 +326,14 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
   /* USER CODE END Init */
 
-  /* Configure the system clock */
-  SystemClock_Config();
-
   /* USER CODE BEGIN SysInit */
-
+  // kod od promotora dać do góry
+	hw_init(); // uart conflict // tim5 conflict // gpioa or instead of assign conflict
+	// nadpisanie zegara?
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -342,8 +342,6 @@ int main(void)
   MX_TIM10_Init();
   MX_I2C3_Init();
   /* USER CODE BEGIN 2 */
-  // kod od promotora dać do góry
-	hw_init(); // uart conflict // tim5 conflict // gpioa or instead of assign conflict
 
 	// flash write unlock
 	FLASH->KEYR = FLASH_FKEY1;
