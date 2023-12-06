@@ -10,7 +10,7 @@
 __weak void VL53L0A1_EXTI_Callback(int DevNo, int GPIO_Pin){
 }
 
-
+#undef VL53L0A1_HAVE_UART
 #ifdef VL53L0A1_HAVE_UART
 
 extern UART_HandleTypeDef huart2;

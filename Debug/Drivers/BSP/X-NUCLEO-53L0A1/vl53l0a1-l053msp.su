@@ -1,2 +1,0 @@
-../Drivers/BSP/X-NUCLEO-53L0A1/vl53l0a1-l053msp.c:10:13:VL53L0A1_EXTI_Callback	16	static
-../Drivers/BSP/X-NUCLEO-53L0A1/vl53l0a1-l053msp.c:77:6:DMA1_Channel4_5_6_7_IRQHandler	8	static

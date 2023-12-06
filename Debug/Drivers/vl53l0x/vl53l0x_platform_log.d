@@ -1,9 +1,0 @@
-Drivers/vl53l0x/vl53l0x_platform_log.o: \
- ../Drivers/vl53l0x/vl53l0x_platform_log.c \
- ../Drivers/vl53l0x/vl53l0x_def.h ../Drivers/vl53l0x/vl53l0x_device.h \
- ../Drivers/vl53l0x/vl53l0x_types.h \
- ../Drivers/vl53l0x/vl53l0x_platform_log.h
-../Drivers/vl53l0x/vl53l0x_def.h:
-../Drivers/vl53l0x/vl53l0x_device.h:
-../Drivers/vl53l0x/vl53l0x_types.h:
-../Drivers/vl53l0x/vl53l0x_platform_log.h:

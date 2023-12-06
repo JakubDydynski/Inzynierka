@@ -1,9 +1,0 @@
-../Drivers/CMSIS/Include/core_cm4.h:1762:22:__NVIC_SetPendingIRQ	16	static
-../DCCCctrl/Src/sx_tx.c:36:13:write8sync	24	static
-../DCCCctrl/Src/sx_tx.c:42:16:sxidx	16	static
-../DCCCctrl/Src/sx_tx.c:49:6:sx_set_datagram	16	static
-../DCCCctrl/Src/sx_tx.c:59:6:sx_set_loco_data	24	static
-../DCCCctrl/Src/sx_tx.c:67:6:sx_preparedata	24	static
-../DCCCctrl/Src/sx_tx.c:97:6:RCC_IRQHandler	8	static
-../DCCCctrl/Src/sx_tx.c:106:6:sx_tx_next_bit	8	static
-../DCCCctrl/Src/sx_tx.c:122:6:sx_start	8	static

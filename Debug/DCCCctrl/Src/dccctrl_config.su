@@ -1,4 +1,0 @@
-../DCCCctrl/Src/dccctrl_config.c:60:6:rstcfg	8	static
-../DCCCctrl/Src/dccctrl_config.c:66:6:loadcfg	16	static
-../DCCCctrl/Src/dccctrl_config.c:89:6:storecfg	16	static
-../DCCCctrl/Src/dccctrl_config.c:106:6:storeautorun	4	static

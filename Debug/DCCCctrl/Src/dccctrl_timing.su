@@ -1,3 +1,0 @@
-../DCCCctrl/Src/dccctrl_timing.c:27:13:led_control	16	static
-../DCCCctrl/Src/dccctrl_timing.c:40:13:run_every_10ms	8	static
-../DCCCctrl/Src/dccctrl_timing.c:61:6:run_every_ms	8	static

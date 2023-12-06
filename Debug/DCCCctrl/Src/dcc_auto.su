@@ -1,4 +1,0 @@
-../DCCCctrl/Src/dcc_auto.c:10:13:autorun_exec	16	static
-../DCCCctrl/Src/dcc_auto.c:21:6:autorun_start	8	static
-../DCCCctrl/Src/dcc_auto.c:31:6:autorun_stop	4	static
-../DCCCctrl/Src/dcc_auto.c:37:6:autorun	8	static
