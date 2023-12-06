@@ -80,6 +80,9 @@ void Error_Handler(void);
 #define LED_BIT	13
 
 #else	// Nucleo 64
+#ifdef HSE_VALUE
+#undef HSE_VALUE
+#endif
 #define HSE_VALUE 8000000u
 #define RCC_CR_HSESEL	(RCC_CR_HSEON | RCC_CR_HSEBYP)
 

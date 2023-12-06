@@ -356,7 +356,7 @@ int main(void)
 	// init H-bridge operation
 
 
-	uart_printf(WelcomeMsg);
+//	uart_printf(WelcomeMsg);
 	HAL_Delay(WelcomeTime);
 
 	/* Set VL53L0X API trace level */
@@ -606,7 +606,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 						Sensor_SetNewRange(&VL53L0XDevs[i],
 								&RangingMeasurementData[i]);
 
-					trace_printf("%d,%d,%d\n", VL53L0XDevs[i].Id, RangingMeasurementData[i].RangeStatus, RangingMeasurementData[i].RangeMilliMeter);
+//					trace_printf("%d,%d,%d\n", VL53L0XDevs[i].Id, RangingMeasurementData[i].RangeStatus, RangingMeasurementData[i].RangeMilliMeter);
 					// char tab[6];
 					// sprintf(tab, "%d%d%d",VL53L0XDevs[i].Id, RangingMeasurementData[i].RangeStatus + 48, RangingMeasurementData[i].RangeMilliMeter);
 					// debug_printff(tab, 10);

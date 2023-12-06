@@ -25,12 +25,12 @@ void Check_I2c_Channel(I2C_HandleTypeDef* channel)
 		  if (result != HAL_OK) // HAL_ERROR or HAL_BUSY or HAL_TIMEOUT
 		  {
 			  nr++;
-			  uart_printf("."); // No ACK received at that address
+//			  uart_printf("."); // No ACK received at that address
 		  }
 		  if (result == HAL_OK)
 		  {
 			  r++;
-			  uart_printf("0x%X", i); // Received an ACK at that address
+//			  uart_printf("0x%X", i); // Received an ACK at that address
 		  }
 		}
 }
