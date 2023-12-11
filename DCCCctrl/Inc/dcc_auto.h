@@ -6,6 +6,7 @@ struct autostep_ {
 	_Bool rev;
 	uint8_t speed;
 	uint32_t f0_28;
+	_Bool itof;
 };
 
 extern struct autostep_ autopgm[NAUTOSTEPS];

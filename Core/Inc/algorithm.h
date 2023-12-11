@@ -8,6 +8,7 @@
 #ifndef INC_ALGORITHM_H_
 #define INC_ALGORITHM_H_
 
-int calculatePWM(int sensor1Distance, int sensor2Distance);
+int calculatePWM(int *isStop);
+int getInitialSide();
 
 #endif /* INC_ALGORITHM_H_ */

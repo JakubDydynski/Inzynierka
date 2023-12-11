@@ -839,9 +839,9 @@ static uint8_t cmd_arctrl(void)
 static void print_ar(uint8_t i)
 {
 	char s[80];
-	sprintf(s, "%2d %3d s: %2d %s %3d %08" PRIx32 "\r\n",
+	sprintf(s, "%2d %3d s: %2d %s %3d %08" PRIx32 " %s\r\n",
 		i, autopgm[i].stime, autopgm[i].locnum, autopgm[i].rev ? "rev" : "fwd",
-		autopgm[i].speed, autopgm[i].f0_28);
+		autopgm[i].speed, autopgm[i].f0_28, autopgm[i].itof ? "tof" : "aut");
 	con_putstr(s);
 }
 // define autorun step
@@ -854,6 +854,7 @@ static uint8_t cmd_ardef(void)
 	_Bool rev = stack_pop();
 	uint8_t speed = stack_pop();
 	uint32_t fun = stack_pop();
+	_Bool itof = stack_pop();
 	
 	if (pos < NAUTOSTEPS && l < NDEVICES)
 	{
@@ -862,6 +863,7 @@ static uint8_t cmd_ardef(void)
 		autopgm[pos].rev = rev;
 		autopgm[pos].speed = speed;
 		autopgm[pos].f0_28 = fun;
+		autopgm[pos].itof = itof;
 		print_ar(pos);
 	}
 	return 0;
