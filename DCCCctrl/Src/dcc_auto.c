@@ -19,11 +19,11 @@ static void autorun_exec(void)
 	loco[l].fun.w[0] = sp->f0_28;
 }
 
+static int isStop = 1;
 static void autorun_exec_tof(void)
 {
 	enum dir {fwd, rev};
 	enum dir dir;
-	static int isStop = 1;
 
 	// set state
 	const struct autostep_ *sp = &autopgm[curr_step];
@@ -32,20 +32,21 @@ static void autorun_exec_tof(void)
 
 	if (isStop)
 	{
+		loco[l].dspeed = 0;
 		// stop, wait 2 s
+		dir = getInitialDir();
+		if (fwd == dir) //conversion from enum dir to bool
+		{
+			loco[l].rev = 0;
+		}
+		else // rev
+		{
+			loco[l].rev = 1;
+		}
 		if ( ++curr_step_time > 3)
 		{
 			isStop = 0;
 			curr_step_time = 0;
-			dir = getInitialDir();
-			if (fwd == dir)
-			{
-				loco[l].rev = 0;
-			}
-			else
-			{
-				loco[l].rev = 1;
-			}
 		}
 	}
 	else
@@ -60,7 +61,10 @@ void autorun_start(void)
 	if (autopgm[0].stime)
 	{
 		autorun_active = 1;
-		autorun_exec();
+		if (!autopgm[curr_step].itof)
+		{
+			autorun_exec();
+		}
 	}
 }
 
@@ -76,7 +80,6 @@ void autorun(void)
 	{
 		if (autorun_active)
 		{
-			++curr_step_time;
 			autorun_exec_tof(); // only every 1 sec? low resolution
 		}
 	}

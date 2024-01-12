@@ -319,7 +319,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
 	int ExitWithLongPress;
-	RangingConfig_e RangingConfig = LONG_RANGE;
+	RangingConfig_e RangingConfig = HIGH_ACCURACY;
 
   /* USER CODE END 1 */
 
@@ -370,7 +370,7 @@ int main(void)
 	//VL53L0X_trace_config(NULL,TRACE_MODULE_ALL, TRACE_LEVEL_ALL, TRACE_FUNCTION_ALL); // Full trace
 	InitSensors(&hi2c3, RangingConfig);
 	OwnDemo(UseSensorsMask, LONG_RANGE);
-//	HAL_TIM_Base_Start_IT(&htim10);
+	HAL_TIM_Base_Start_IT(&htim10);
 	// trace_printf("%d,%u,%d,%d,%d\n", VL53L0XDevs[i].Id, TimeStamp_Get(), RangingMeasurementData.RangeStatus, RangingMeasurementData.RangeMilliMeter, RangingMeasurementData.SignalRateRtnMegaCps);
 	
   /* USER CODE END 2 */

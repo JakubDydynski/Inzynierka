@@ -13,22 +13,37 @@
 // what is equation of velocity for the model of train v = pwm*t?
 #define V_MAX 10
 #define ACCELERATION 2
-#define TRAIN_LENGHT 20
+#define TRAIN_LENGHT 200 // approx 200-210mm
+#define LINE_LENGTH 600//10*180 // 10 torów każdy ok 180mm
 #define TRAIN_MID_POINT ((TRAIN_LENGHT) / 2)
-#define MIN_OFFSET ((TRAIN_MID_POINT) + 5)
-#define DISTANCE_W_OFFSET (100 + (MIN_OFFSET)*2)
+#define MIN_OFFSET ((TRAIN_MID_POINT) + 50)
+//#define LENGTH_WITH_OFFSET ((LINE_LENGTH) + (MIN_OFFSET)*2)
 
-#define V_DELAY(distance) (sqrt(V_MAX) - sqrt(2 * ((distance - ((DISTANCE_W_OFFSET) / 2))) * (ACCELERATION)))
-#define V_ACCELERATION(distance) (sqrt(2*(distance - (MIN_OFFSET))*(ACCELERATION)))
+//#define V_DELAY(distance) (sqrt(V_MAX) - sqrt(2 * ((distance - ((LENGTH_WITH_OFFSET) / 2))) * (ACCELERATION)))
+//#define V_ACCELERATION(distance) (sqrt(2*(distance - (MIN_OFFSET))*(ACCELERATION)))
+#define STEPS_NUM 8
+#define shorten_step 3
+#define DIST_PER_STEP ((LINE_LENGTH))/((STEPS_NUM)*shorten_step) //
+volatile int dist_per_step = DIST_PER_STEP;
+#define MAX_STEPS ((LINE_LENGTH)/(DIST_PER_STEP))
+volatile int max_step = MAX_STEPS;
+
+#define shorten_deacc 3
+#define CALC_STEPS_UP(distance) (distance/(DIST_PER_STEP))
+#define CALC_STEPS_DOWN(distance) ((MAX_STEPS) - (((LINE_LENGTH/2) - distance)/(DIST_PER_STEP/shorten_deacc)))
 
 extern VL53L0X_RangingMeasurementData_t RangingMeasurementData[2];
 
+enum sensor {ZERO, ONE};
+int pwm = 0;
+int calc_pos;
+enum sensor sensor_meas = ONE;
 static int calculate_position(void)
 {
-    int position = RangingMeasurementData[0].RangeMilliMeter < RangingMeasurementData[1].RangeMilliMeter ?
-    				RangingMeasurementData[0].RangeMilliMeter + TRAIN_MID_POINT:
-					RangingMeasurementData[1].RangeMilliMeter - TRAIN_MID_POINT;
-    return position; 
+    calc_pos = RangingMeasurementData[0].RangeMilliMeter < RangingMeasurementData[1].RangeMilliMeter ?
+    				RangingMeasurementData[0].RangeMilliMeter:
+					RangingMeasurementData[1].RangeMilliMeter;
+    return RangingMeasurementData[0].RangeMilliMeter < RangingMeasurementData[1].RangeMilliMeter ? ZERO : ONE;
 }
 
 int getInitialDir()
@@ -37,7 +52,7 @@ int getInitialDir()
 	enum dir dir;
 	int position = calculate_position();
 
-	if (position < DISTANCE_W_OFFSET/2)
+	if (position < LINE_LENGTH/2)
 	{
 		dir = fwd;
 	}
@@ -48,20 +63,21 @@ int getInitialDir()
 	return dir;
 }
 
+
 int calculatePWM(int *isStop)
 {
-    int pwm;
-    int position;
-    position = calculate_position();
 
-    if (position < DISTANCE_W_OFFSET/2) // acceleration phase
+    int position;
+    //calc_pos = calculate_position();
+    sensor_meas = calculate_position();
+    if (sensor_meas == ONE) // acceleration phase
     {
-        pwm = V_ACCELERATION(position);
+        pwm = CALC_STEPS_UP(calc_pos);
     }
     else // deacceleration phase
     {
-        pwm = V_DELAY(position);
-        if (pwm < 3)
+        pwm = CALC_STEPS_DOWN(calc_pos);
+        if (pwm < 1)
         {
         	*isStop = 1;
         }
@@ -70,6 +86,7 @@ int calculatePWM(int *isStop)
         	*isStop = 0;
         }
     }
-
+    if (pwm<0)
+    	return 0;
     return pwm;
 }
