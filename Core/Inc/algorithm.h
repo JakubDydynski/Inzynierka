@@ -7,8 +7,9 @@
 
 #ifndef INC_ALGORITHM_H_
 #define INC_ALGORITHM_H_
-
-int calculatePWM(int *isStop);
-int getInitialSide();
+#include "stdint.h"
+int calcStep(uint8_t sensor);
+_Bool getInitialDir();
+_Bool isInRange(uint8_t sensor);
 
 #endif /* INC_ALGORITHM_H_ */

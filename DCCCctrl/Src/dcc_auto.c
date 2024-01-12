@@ -17,41 +17,12 @@ static void autorun_exec(void)
 	loco[l].rev = sp->rev;
 	loco[l].dspeed = sp->speed;
 	loco[l].fun.w[0] = sp->f0_28;
-}
-
-static int isStop = 1;
-static void autorun_exec_tof(void)
-{
-	enum dir {fwd, rev};
-	enum dir dir;
-
-	// set state
-	const struct autostep_ *sp = &autopgm[curr_step];
-	uint8_t l = sp->locnum;
-	loco[l].fun.w[0] = sp->f0_28;
-
-	if (isStop)
+	if (sp->itof != 0)
 	{
-		loco[l].dspeed = 0;
-		// stop, wait 2 s
-		dir = getInitialDir();
-		if (fwd == dir) //conversion from enum dir to bool
+		if (isInRange(sp->itof))
 		{
-			loco[l].rev = 0;
+			loco[l].dspeed = calcStep(sp->itof); // zakładamy, że użytkownik podał dobry kierunek
 		}
-		else // rev
-		{
-			loco[l].rev = 1;
-		}
-		if ( ++curr_step_time > 3)
-		{
-			isStop = 0;
-			curr_step_time = 0;
-		}
-	}
-	else
-	{
-		loco[l].dspeed = calculatePWM(&isStop);//sp->speed;
 	}
 }
 
@@ -61,10 +32,7 @@ void autorun_start(void)
 	if (autopgm[0].stime)
 	{
 		autorun_active = 1;
-		if (!autopgm[curr_step].itof)
-		{
-			autorun_exec();
-		}
+		autorun_exec();
 	}
 }
 
@@ -76,23 +44,19 @@ void autorun_stop(void)
 // called every second
 void autorun(void)
 {
-	if (autopgm[curr_step].itof)
+
+	if (autorun_active && ++curr_step_time == autopgm[curr_step].stime)
 	{
-		if (autorun_active)
-		{
-			autorun_exec_tof(); // only every 1 sec? low resolution
-		}
+
+		if (++curr_step == NAUTOSTEPS || autopgm[curr_step].stime == 0)
+			curr_step = 0;
+		if (autopgm[curr_step].stime == 0)
+			autorun_active = 0;
+		else
+			autorun_exec();
 	}
-	else
+	else if (autorun_active && autopgm[curr_step].itof != 0) // do dynamic meas if itof is on
 	{
-		if (autorun_active && ++curr_step_time == autopgm[curr_step].stime)
-		{
-			if (++curr_step == NAUTOSTEPS || autopgm[curr_step].stime == 0)
-				curr_step = 0;
-			if (autopgm[curr_step].stime == 0)
-				autorun_active = 0;
-			else
-				autorun_exec();
-		}
+		autorun_exec();
 	}
 }
