@@ -207,6 +207,7 @@ void br_set_mode(enum ctrlmode_ mode)
 		// complementary outputs from TIM3CH1 and TIM3CH2
 		DCC_DUTY2 = NEWDCC_STEPS / 2;	// CCR2 is DCC duty/controls INx, CCR3 controls EN 
 		DCC_TIM->CCER = TIM_CCER_CC1E | TIM_CCER_CC2E | TIM_CCER_CC2P;
+		DCC_TIM->CR1 = TIM_CR1_ARPE | TIM_CR1_CEN;
 		// enable high by port setting
 		EN1_PORT->BSRR = EN1_MSK;
 #else

@@ -212,6 +212,9 @@ void hw_init(void)
 	//LED_TIM->DIER = TIM_DIER_CC1IE | TIM_DIER_UIE;
 	LED_TIM->CR1 = TIM_CR1_ARPE | TIM_CR1_CEN;
 
+	DCC_TIM->CCMR1 = TIM_CCMR1_OC1M_PWM1 | TIM_CCMR1_OC1PE
+			| TIM_CCMR1_OC2M_PWM1 | TIM_CCMR1_OC2PE;
+
 	USART2->BRR = (APB1_FREQ + CON_BAUD / 2) / CON_BAUD;
 	USART2->CR1 = USART_CR1_RE | USART_CR1_TE | USART_CR1_UE | USART_CR1_RXNEIE;
 
@@ -233,7 +236,7 @@ void hw_init(void)
 		.p12 = GPIO_OSPEEDR_HI	// USB
 	}.w;
 	GPIOA->MODER = (union bf2_){
-		.p0 = GPIO_MODER_AF,	// TIM2CH1
+		.p0 = GPIO_MODER_AF,	// TIM5CH1, CH2
 		.p1 = GPIO_MODER_AF,
 		.p2 = GPIO_MODER_AF,	// USART2
 		.p3 = GPIO_MODER_AF,
@@ -355,6 +358,8 @@ int main(void)
 	br_set_mode(cd.n.mode);
 	// init H-bridge operation
 
+	NVIC_SetPriority(DCC_PktAs_IRQn, 1);
+	NVIC_EnableIRQ(DCC_PktAs_IRQn);
 
 //	uart_printf(WelcomeMsg);
 	HAL_Delay(WelcomeTime);
@@ -365,7 +370,7 @@ int main(void)
 	//VL53L0X_trace_config(NULL,TRACE_MODULE_ALL, TRACE_LEVEL_ALL, TRACE_FUNCTION_ALL); // Full trace
 	InitSensors(&hi2c3, RangingConfig);
 	OwnDemo(UseSensorsMask, LONG_RANGE);
-	HAL_TIM_Base_Start_IT(&htim10);
+//	HAL_TIM_Base_Start_IT(&htim10);
 	// trace_printf("%d,%u,%d,%d,%d\n", VL53L0XDevs[i].Id, TimeStamp_Get(), RangingMeasurementData.RangeStatus, RangingMeasurementData.RangeMilliMeter, RangingMeasurementData.SignalRateRtnMegaCps);
 	
   /* USER CODE END 2 */
@@ -386,7 +391,7 @@ int main(void)
   * @brief System Clock Configuration
   * @retval None
   */
-void SystemClock_Config(void)
+void xSystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};

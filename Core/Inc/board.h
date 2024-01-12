@@ -26,19 +26,19 @@
 #define LED_DUTY	LED_TIM->CCR2
 
 // Right-side bridge (CN10)
-#define DCC_TIM		TIM3
+#define DCC_TIM		TIM5
 
-#define DCC_TIM_IRQHandler	TIM3_IRQHandler
-#define DCC_TIM_IRQn	TIM3_IRQn
+#define DCC_TIM_IRQHandler	TIM5_IRQHandler
+#define DCC_TIM_IRQn	TIM5_IRQn
 
-#define DCC_DUTY	TIM3->CCR1
-#define DCC_DUTY2	TIM3->CCR2
+#define DCC_DUTY	TIM5->CCR1
+#define DCC_DUTY2	TIM5->CCR2
 
 #define AN_TIM	DCC_TIM
 #define AN_FWD_DUTY	DCC_DUTY
 
-#define EN1_PORT	GPIOA
-#define EN1_BIT		10
+#define EN1_PORT	GPIOC
+#define EN1_BIT		1
 
 // dummy!!!
 #define NACK_PORT	GPIOC
