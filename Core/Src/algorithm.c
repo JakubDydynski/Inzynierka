@@ -25,10 +25,11 @@ extern VL53L0X_RangingMeasurementData_t RangingMeasurementData[2];
 
 #define TRAIN_LENGHT 200 // approx 200-210mm
 #define LINE_LENGTH 600//10*180 // 10 torów każdy ok 180mm
-#define CALC_STEP(distance)	(10 - (SENSOR_RANGE - distance)/40) // na 40cm mamy 10stepów i co 4 cm zmienjaszamy o 1 step
+#define MAX_STEP 10
+#define CALC_STEP(distance)	((MAX_STEP - (SENSOR_RANGE - distance)/(SENSOR_RANGE/MAX_STEP))+1) // na 40cm mamy 10stepów i co 4 cm zmienjaszamy o 1 step
 #define GET_DISTANCE(sensor) RangingMeasurementData[sensor-1].RangeMilliMeter
 #define SENSOR_RANGE 400 //400mm
-#define STOP_DISTANCE 50 // 50mm
+#define STOP_DISTANCE 55 // 55mm
 //40-36 10
 //36 9
 //32 8
@@ -40,6 +41,7 @@ extern VL53L0X_RangingMeasurementData_t RangingMeasurementData[2];
 //8 2
 //4 1
 //3 0
+// we miss 1 dspeed bcs of stop distance
 int step = 0;
 uint16_t calc_pos;
 
@@ -53,7 +55,7 @@ int calcStep(uint8_t sensor)
 	calc_pos = GET_DISTANCE(sensor);
 
 	step = CALC_STEP(calc_pos);
-	if (calc_pos < 40)
+	if (calc_pos < STOP_DISTANCE)
 		step = 0;
 
     return step;

@@ -10,9 +10,12 @@ _Bool autorun_active;
 
 static void autorun_exec(void)
 {
-	curr_step_time = 0;
 	// set state
 	const struct autostep_ *sp = &autopgm[curr_step];
+	if(sp->itof == 0)
+	{
+		curr_step_time = 0;
+	}
 	uint8_t l = sp->locnum;
 	loco[l].rev = sp->rev;
 	loco[l].dspeed = sp->speed;
@@ -29,6 +32,7 @@ static void autorun_exec(void)
 void autorun_start(void)
 {
 	curr_step = 0;
+	curr_step_time = 0 ; // fixed
 	if (autopgm[0].stime)
 	{
 		autorun_active = 1;
@@ -47,7 +51,10 @@ void autorun(void)
 
 	if (autorun_active && ++curr_step_time == autopgm[curr_step].stime)
 	{
-
+		if ( autopgm[curr_step].itof != 0)
+		{
+			curr_step_time = 0;
+		}
 		if (++curr_step == NAUTOSTEPS || autopgm[curr_step].stime == 0)
 			curr_step = 0;
 		if (autopgm[curr_step].stime == 0)
