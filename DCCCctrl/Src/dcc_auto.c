@@ -6,6 +6,7 @@ struct autostep_ __attribute__((aligned)) autopgm[NAUTOSTEPS];
 
 uint8_t curr_step;
 uint8_t curr_step_time;
+_Bool itof_flag = 0;
 _Bool autorun_active;
 
 static void autorun_exec(void)
@@ -20,13 +21,13 @@ static void autorun_exec(void)
 	loco[l].rev = sp->rev;
 	loco[l].dspeed = sp->speed;
 	loco[l].fun.w[0] = sp->f0_28;
-	if (sp->itof != 0)
-	{
-		if (isInRange(sp->itof))
-		{
-			loco[l].dspeed = calcStep(sp->itof); // zakładamy, że użytkownik podał dobry kierunek
-		}
-	}
+//	if (sp->itof != 0)
+//	{
+//		if (isInRange(sp->itof))
+//		{
+//			loco[l].dspeed = calcStep(sp->itof); // zakładamy, że użytkownik podał dobry kierunek
+//		}
+//	}
 }
 
 void autorun_start(void)
@@ -55,6 +56,10 @@ void autorun(void)
 		{
 			curr_step_time = 0;
 		}
+		else
+		{
+			itof_flag=0;
+		}
 		if (++curr_step == NAUTOSTEPS || autopgm[curr_step].stime == 0)
 			curr_step = 0;
 		if (autopgm[curr_step].stime == 0)
@@ -64,6 +69,11 @@ void autorun(void)
 	}
 	else if (autorun_active && autopgm[curr_step].itof != 0) // do dynamic meas if itof is on
 	{
-		autorun_exec();
+//		autorun_exec();
+		itof_flag = 1;
+	}
+	else
+	{
+		itof_flag = 0;
 	}
 }

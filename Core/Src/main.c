@@ -27,6 +27,7 @@
 #include "cmdproc.h"
 #include "config.h"
 #include "dcc_tx.h"
+#include "dcc_auto.h"
 
 #include <string.h>
 #include "X-NUCLEO-53L0A1.h"
@@ -95,6 +96,7 @@ I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c3;
 
 TIM_HandleTypeDef htim10;
+TIM_HandleTypeDef htim11;
 
 /* USER CODE BEGIN PV */
 extern VL53L0X_Dev_t VL53L0XDevs[2];
@@ -116,6 +118,7 @@ static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_TIM10_Init(void);
 static void MX_I2C3_Init(void);
+static void MX_TIM11_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -344,6 +347,7 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM10_Init();
   MX_I2C3_Init();
+  MX_TIM11_Init();
   /* USER CODE BEGIN 2 */
 
 	// flash write unlock
@@ -371,6 +375,7 @@ int main(void)
 	InitSensors(&hi2c3, RangingConfig);
 	OwnDemo(UseSensorsMask, LONG_RANGE);
 	HAL_TIM_Base_Start_IT(&htim10);
+	HAL_TIM_Base_Start_IT(&htim11);
 	// trace_printf("%d,%u,%d,%d,%d\n", VL53L0XDevs[i].Id, TimeStamp_Get(), RangingMeasurementData.RangeStatus, RangingMeasurementData.RangeMilliMeter, RangingMeasurementData.SignalRateRtnMegaCps);
 	
   /* USER CODE END 2 */
@@ -391,7 +396,7 @@ int main(void)
   * @brief System Clock Configuration
   * @retval None
   */
-void xSystemClock_Config(void)
+void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -533,6 +538,37 @@ static void MX_TIM10_Init(void)
 }
 
 /**
+  * @brief TIM11 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM11_Init(void)
+{
+
+  /* USER CODE BEGIN TIM11_Init 0 */
+
+  /* USER CODE END TIM11_Init 0 */
+
+  /* USER CODE BEGIN TIM11_Init 1 */
+
+  /* USER CODE END TIM11_Init 1 */
+  htim11.Instance = TIM11;
+  htim11.Init.Prescaler = 9999;
+  htim11.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim11.Init.Period = 2099;
+  htim11.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim11.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+  if (HAL_TIM_Base_Init(&htim11) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM11_Init 2 */
+
+  /* USER CODE END TIM11_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -622,6 +658,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			}
 		}
     // trace_printf("%d",calculatePWM(RangingMeasurementData[0].RangeMilliMeter, RangingMeasurementData[1].RangeMilliMeter));
+	}
+	else if (htim == &htim11)
+	{
+//		__NOP();
+		const struct autostep_ *sp = &autopgm[curr_step];
+		if(itof_flag)
+		{
+			if (isInRange(sp->itof))
+			{
+				uint8_t l = sp->locnum;
+				loco[l].dspeed = calcStep(sp->itof); // zakładamy, że użytkownik podał dobry kierunek
+			}
+
+		}
 	}
 }
 

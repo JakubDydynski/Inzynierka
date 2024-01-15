@@ -25,8 +25,8 @@ extern VL53L0X_RangingMeasurementData_t RangingMeasurementData[2];
 
 #define TRAIN_LENGHT 200 // approx 200-210mm
 #define LINE_LENGTH 600//10*180 // 10 torów każdy ok 180mm
-#define MAX_STEP 10
-#define CALC_STEP(distance)	((MAX_STEP - (SENSOR_RANGE - distance)/(SENSOR_RANGE/MAX_STEP))+1) // na 40cm mamy 10stepów i co 4 cm zmienjaszamy o 1 step
+#define MAX_STEP 16
+#define CALC_STEP(distance)	((MAX_STEP - (SENSOR_RANGE - (distance - STOP_DISTANCE))/(SENSOR_RANGE/MAX_STEP))+1) // na 40cm mamy 10stepów i co 4 cm zmienjaszamy o 1 step
 #define GET_DISTANCE(sensor) RangingMeasurementData[sensor-1].RangeMilliMeter
 #define SENSOR_RANGE 400 //400mm
 #define STOP_DISTANCE 55 // 55mm

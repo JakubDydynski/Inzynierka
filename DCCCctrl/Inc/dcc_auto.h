@@ -10,7 +10,7 @@ struct autostep_ {
 };
 
 extern struct autostep_ autopgm[NAUTOSTEPS];
-
+extern _Bool itof_flag;
 extern uint8_t curr_step;
 extern 
 uint8_t curr_step_time;
