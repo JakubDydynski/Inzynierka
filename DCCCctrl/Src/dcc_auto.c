@@ -67,9 +67,8 @@ void autorun(void)
 		else
 			autorun_exec();
 	}
-	else if (autorun_active && autopgm[curr_step].itof != 0) // do dynamic meas if itof is on
+	else if (autorun_active && autopgm[curr_step].itof != 0)
 	{
-//		autorun_exec();
 		itof_flag = 1;
 	}
 	else
