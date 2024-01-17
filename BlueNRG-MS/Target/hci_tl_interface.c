@@ -30,7 +30,7 @@
 #define MAX_BUFFER_SIZE   255U
 #define TIMEOUT_DURATION  15U
 
-EXTI_HandleTypeDef hexti4;
+EXTI_HandleTypeDef hexti7;
 
 /******************** IO Operation and BUS services ***************************/
 
@@ -255,10 +255,10 @@ void hci_tl_lowlevel_init(void)
   /* USER CODE END hci_tl_lowlevel_init 2 */
 
   /* Register event irq handler */
-  HAL_EXTI_GetHandle(&hexti4, EXTI_LINE_4);
-  HAL_EXTI_RegisterCallback(&hexti4, HAL_EXTI_COMMON_CB_ID, hci_tl_lowlevel_isr);
-  HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+  HAL_EXTI_GetHandle(&hexti7, EXTI_LINE_7);
+  HAL_EXTI_RegisterCallback(&hexti7, HAL_EXTI_COMMON_CB_ID, hci_tl_lowlevel_isr);
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
   /* USER CODE BEGIN hci_tl_lowlevel_init 3 */
 

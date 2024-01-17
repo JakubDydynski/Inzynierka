@@ -325,9 +325,12 @@ static void User_Process(void)
  * @param  float pointer to pressure data
  * @retval None
  */
+#include "X-NUCLEO-53L0A1.h"
+#include "vl53l0x_api.h"
+extern VL53L0X_RangingMeasurementData_t RangingMeasurementData[2];
 static void Set_Random_Environmental_Values(float *data_t, float *data_p)
 {
-  *data_t = 27.0 + ((uint64_t)rand()*5)/RAND_MAX;     /* T sensor emulation */
+  *data_t = RangingMeasurementData[0].RangeMilliMeter/10;     /* T sensor emulation */
   *data_p = 1000.0 + ((uint64_t)rand()*80)/RAND_MAX; /* P sensor emulation */
 }
 
