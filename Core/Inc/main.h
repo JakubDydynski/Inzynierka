@@ -29,6 +29,8 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
 
+#include "hci_tl_interface.h"
+#include "custom.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -57,10 +59,7 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define Blue_Push_Button_Pin GPIO_PIN_13
-#define Blue_Push_Button_GPIO_Port GPIOC
-#define LD2__Chip_enable_Pin GPIO_PIN_5
-#define LD2__Chip_enable_GPIO_Port GPIOA
+#define BSP_BUTTON_EXTI_IRQn EXTI15_10_IRQn
 #define SENSOR_1_Pin GPIO_PIN_4
 #define SENSOR_1_GPIO_Port GPIOC
 #define SENSOR_2_Pin GPIO_PIN_5

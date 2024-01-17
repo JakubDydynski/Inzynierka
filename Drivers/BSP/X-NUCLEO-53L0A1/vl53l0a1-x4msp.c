@@ -447,9 +447,9 @@ void EXTI9_5_IRQHandler(void)
  * For share interrupt  end user must fix this code to find the originating pins
  * and dispatch accordingly see __HAL_GPIO_EXTI_GET_FLAG  etc ..
  */
-void EXTI15_10_IRQHandler(void){
-    HAL_GPIO_EXTI_IRQHandler(VL53L0A1_EXTI15_10_USE_PIN);
-}
+//void EXTI15_10_IRQHandler(void){
+//    HAL_GPIO_EXTI_IRQHandler(VL53L0A1_EXTI15_10_USE_PIN);
+//}
 #endif //VL53L0A1_EXTI15_10_USE_PIN
 
 void VL53L0A1_EXTI_Init(int  IntPriority, int SubPriority){

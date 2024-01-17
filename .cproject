@@ -23,7 +23,7 @@
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.fpu.1589294595" name="Floating-point unit" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.fpu" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.fpu.value.fpv4-sp-d16" valueType="enumerated"/>
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.703828448" name="Floating-point ABI" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.hard" valueType="enumerated"/>
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_board.839117484" name="Board" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_board" useByScannerDiscovery="false" value="genericBoard" valueType="string"/>
-							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults.1529083298" name="Defaults" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults" useByScannerDiscovery="false" value="com.st.stm32cube.ide.common.services.build.inputs.revA.1.0.5 || Debug || true || Executable || com.st.stm32cube.ide.mcu.gnu.managedbuild.option.toolchain.value.workspace || STM32F401RETx || 0 || 0 || arm-none-eabi- || ${gnu_tools_for_stm32_compiler_path} || ../Core/Inc | ../Drivers/STM32F4xx_HAL_Driver/Inc | ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy | ../Drivers/CMSIS/Device/ST/STM32F4xx/Include | ../Drivers/CMSIS/Include ||  ||  || USE_HAL_DRIVER | STM32F401xE ||  || Drivers | Core/Startup | Core ||  ||  || ${workspace_loc:/${ProjName}/STM32F401RETX_FLASH.ld} || true || NonSecure ||  || secure_nsclib.o ||  || None || " valueType="string"/>
+							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults.1529083298" name="Defaults" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults" useByScannerDiscovery="false" value="com.st.stm32cube.ide.common.services.build.inputs.revA.1.0.5 || Debug || true || Executable || com.st.stm32cube.ide.mcu.gnu.managedbuild.option.toolchain.value.workspace || STM32F401RETx || 0 || 0 || arm-none-eabi- || ${gnu_tools_for_stm32_compiler_path} || ../Core/Inc | ../Drivers/STM32F4xx_HAL_Driver/Inc | ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy | ../Drivers/CMSIS/Device/ST/STM32F4xx/Include | ../Drivers/CMSIS/Include | ../BlueNRG-MS/Target | ../Middlewares/ST/BlueNRG-MS/hci/hci_tl_patterns/Basic | ../Middlewares/ST/BlueNRG-MS/utils | ../BlueNRG-MS/App | ../Drivers/BSP/custom | ../Middlewares/ST/BlueNRG-MS/includes | ../Middlewares/ST/BlueNRG-MS/hci/hci_tl_patterns/Template ||  ||  || USE_HAL_DRIVER | STM32F401xE ||  || BlueNRG-MS | Drivers | Core/Startup | Middlewares | Core ||  ||  || ${workspace_loc:/${ProjName}/STM32F401RETX_FLASH.ld} || true || NonSecure ||  || secure_nsclib.o ||  || None || " valueType="string"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform.2064381475" isAbstract="false" osList="all" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform"/>
 							<builder buildPath="${workspace_loc:/STM32F401Nucleo-VL6180X}/Debug" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder.929436838" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder"/>
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.1564590194" name="MCU GCC Assembler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler">
@@ -61,6 +61,13 @@
 									<listOptionValue builtIn="false" value="../Drivers/BSP/vl53l0x"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/DCCCctrl/Inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Blocks/Inc}&quot;"/>
+									<listOptionValue builtIn="false" value="../BlueNRG-MS/Target"/>
+									<listOptionValue builtIn="false" value="../Middlewares/ST/BlueNRG-MS/hci/hci_tl_patterns/Basic"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Middlewares/ST/BlueNRG-MS/hci/hci_tl_patterns/Template}&quot;"/>
+									<listOptionValue builtIn="false" value="../Middlewares/ST/BlueNRG-MS/utils"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Middlewares/ST/BlueNRG-MS/includes}&quot;"/>
+									<listOptionValue builtIn="false" value="../BlueNRG-MS/App"/>
+									<listOptionValue builtIn="false" value="../Drivers/BSP/custom"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="true" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includefiles.21925145" name="Include files (-include)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includefiles" useByScannerDiscovery="false" valueType="includeFiles"/>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.812668206" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
@@ -91,7 +98,9 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Blocks"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="DCCCctrl"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="BlueNRG-MS"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -119,7 +128,7 @@
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.fpu.769079862" name="Floating-point unit" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.fpu" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.fpu.value.fpv4-sp-d16" valueType="enumerated"/>
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.1986730307" name="Floating-point ABI" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.hard" valueType="enumerated"/>
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_board.1892426662" name="Board" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_board" useByScannerDiscovery="false" value="genericBoard" valueType="string"/>
-							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults.1641389901" name="Defaults" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults" useByScannerDiscovery="false" value="com.st.stm32cube.ide.common.services.build.inputs.revA.1.0.5 || Release || false || Executable || com.st.stm32cube.ide.mcu.gnu.managedbuild.option.toolchain.value.workspace || STM32F401RETx || 0 || 0 || arm-none-eabi- || ${gnu_tools_for_stm32_compiler_path} || ../Core/Inc | ../Drivers/STM32F4xx_HAL_Driver/Inc | ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy | ../Drivers/CMSIS/Device/ST/STM32F4xx/Include | ../Drivers/CMSIS/Include ||  ||  || USE_HAL_DRIVER | STM32F401xE ||  || Drivers | Core/Startup | Core ||  ||  || ${workspace_loc:/${ProjName}/STM32F401RETX_FLASH.ld} || true || NonSecure || More || secure_nsclib.o ||  || None || " valueType="string"/>
+							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults.1641389901" name="Defaults" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults" useByScannerDiscovery="false" value="com.st.stm32cube.ide.common.services.build.inputs.revA.1.0.5 || Release || false || Executable || com.st.stm32cube.ide.mcu.gnu.managedbuild.option.toolchain.value.workspace || STM32F401RETx || 0 || 0 || arm-none-eabi- || ${gnu_tools_for_stm32_compiler_path} || ../Core/Inc | ../Drivers/STM32F4xx_HAL_Driver/Inc | ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy | ../Drivers/CMSIS/Device/ST/STM32F4xx/Include | ../Drivers/CMSIS/Include | ../BlueNRG-MS/Target | ../Middlewares/ST/BlueNRG-MS/hci/hci_tl_patterns/Basic | ../Middlewares/ST/BlueNRG-MS/utils | ../BlueNRG-MS/App | ../Drivers/BSP/custom | ../Middlewares/ST/BlueNRG-MS/includes | ../Middlewares/ST/BlueNRG-MS/hci/hci_tl_patterns/Template ||  ||  || USE_HAL_DRIVER | STM32F401xE ||  || BlueNRG-MS | Drivers | Core/Startup | Middlewares | Core ||  ||  || ${workspace_loc:/${ProjName}/STM32F401RETX_FLASH.ld} || true || NonSecure || More || secure_nsclib.o ||  || None || " valueType="string"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform.1089566398" isAbstract="false" osList="all" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform"/>
 							<builder buildPath="${workspace_loc:/STM32F401Nucleo-VL6180X}/Release" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder.551425087" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder"/>
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.1727113915" name="MCU GCC Assembler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler">
@@ -139,6 +148,11 @@
 									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="../BlueNRG-MS/Target"/>
+									<listOptionValue builtIn="false" value="../Middlewares/ST/BlueNRG-MS/hci/hci_tl_patterns/Basic"/>
+									<listOptionValue builtIn="false" value="../Middlewares/ST/BlueNRG-MS/utils"/>
+									<listOptionValue builtIn="false" value="../BlueNRG-MS/App"/>
+									<listOptionValue builtIn="false" value="../Drivers/BSP/custom"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.211454138" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -168,7 +182,9 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Blocks"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="DCCCctrl"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="BlueNRG-MS"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

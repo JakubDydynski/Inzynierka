@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "app_x-cube-ble1.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -92,7 +93,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c3;
 
 TIM_HandleTypeDef htim10;
@@ -115,7 +115,6 @@ char WelcomeMsg[] = "Hi I am Ranging VL53L0X mcu " MCU_NAME "\n";
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_I2C1_Init(void);
 static void MX_TIM10_Init(void);
 static void MX_I2C3_Init(void);
 static void MX_TIM11_Init(void);
@@ -344,10 +343,10 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_I2C1_Init();
   MX_TIM10_Init();
   MX_I2C3_Init();
   MX_TIM11_Init();
+  MX_BlueNRG_MS_Init();
   /* USER CODE BEGIN 2 */
 
 	// flash write unlock
@@ -387,6 +386,7 @@ int main(void)
 		__WFI();
     /* USER CODE END WHILE */
 
+  MX_BlueNRG_MS_Process();
     /* USER CODE BEGIN 3 */
 	}
   /* USER CODE END 3 */
@@ -436,40 +436,6 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-}
-
-/**
-  * @brief I2C1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_I2C1_Init(void)
-{
-
-  /* USER CODE BEGIN I2C1_Init 0 */
-
-  /* USER CODE END I2C1_Init 0 */
-
-  /* USER CODE BEGIN I2C1_Init 1 */
-
-  /* USER CODE END I2C1_Init 1 */
-  hi2c1.Instance = I2C1;
-  hi2c1.Init.ClockSpeed = 400000;
-  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c1.Init.OwnAddress1 = 0;
-  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  hi2c1.Init.OwnAddress2 = 0;
-  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN I2C1_Init 2 */
-
-  /* USER CODE END I2C1_Init 2 */
-
 }
 
 /**
@@ -584,29 +550,16 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD2__Chip_enable_GPIO_Port, LD2__Chip_enable_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, SENSOR_1_Pin|SENSOR_2_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : Blue_Push_Button_Pin */
-  GPIO_InitStruct.Pin = Blue_Push_Button_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(Blue_Push_Button_GPIO_Port, &GPIO_InitStruct);
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12|GPIO_PIN_13, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : PA4 */
   GPIO_InitStruct.Pin = GPIO_PIN_4;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : LD2__Chip_enable_Pin */
-  GPIO_InitStruct.Pin = LD2__Chip_enable_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LD2__Chip_enable_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : SENSOR_1_Pin SENSOR_2_Pin */
   GPIO_InitStruct.Pin = SENSOR_1_Pin|SENSOR_2_Pin;
@@ -615,9 +568,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : PB12 PB13 */
+  GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 }
 
