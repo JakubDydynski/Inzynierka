@@ -9,7 +9,6 @@
 #define INC_ALGORITHM_H_
 #include "stdint.h"
 int calcStep(uint8_t sensor);
-_Bool getInitialDir();
 _Bool isInRange(uint8_t sensor);
 
 #endif /* INC_ALGORITHM_H_ */

@@ -4,9 +4,6 @@
  *  Created on: Oct 21, 2023
  *      Author: Jakub
  */
-
-
-#include "X-NUCLEO-53L0A1.h"
 #include "vl53l0x_api.h"
 #include "stm32f4xx_hal.h"
 #include "sensor.h"
@@ -38,15 +35,15 @@ int LeakyFactorFix8 = (int) (0.6 * 256);
  * Set err on display and loop forever
  * @param err Error case code
  */
-//void HandleError(int err)
-//{
+void HandleError(int err)
+{
 //	char msg[16];
 //	sprintf(msg, "Er%d", err);
 //	XNUCLEO53L0A1_SetDisplayString(msg);
-//	while (1)
-//	{
-//	};
-//}
+	while (1)
+	{
+	};
+}
 
 VL53L0X_Dev_t VL53L0XDevs[2] =
 {
@@ -62,7 +59,7 @@ static void SetI2C(I2C_HandleTypeDef *hi2c)
     }
 }
 
-static int ResetId(int DevNo, GPIO_PinState state)
+static int SetShutdownPin(int DevNo, GPIO_PinState state)
 {
 	switch (DevNo)
 	{
@@ -248,7 +245,7 @@ void InitSensors(I2C_HandleTypeDef *hi2c, RangingConfig_e rangingConfig)
 
 	/* Reset all */
 	for (i = 0; i < 3; i++)
-		status = ResetId(i, 0);
+		status = SetShutdownPin(i, 0);
 	HAL_Delay(2);
 
 	/* detect all sensors */
@@ -258,7 +255,7 @@ void InitSensors(I2C_HandleTypeDef *hi2c, RangingConfig_e rangingConfig)
 		pDev = &VL53L0XDevs[i];
 		pDev->I2cDevAddr = 0x52;
 		pDev->Present = 0;
-		status = ResetId(pDev->Id, 1); // XNUCLEO53L0A1_ResetId
+		status = SetShutdownPin(pDev->Id, 1);
 		HAL_Delay(2);
 		FinalAddress = 0x52 + (i + 1) * 5;
 
@@ -320,12 +317,12 @@ void InitSensors(I2C_HandleTypeDef *hi2c, RangingConfig_e rangingConfig)
 		/* if fail r can't use for any reason then put the  device back to reset */
 		if (status)
 		{
-			ResetId(i, 0);
+			SetShutdownPin(i, 0);
 		}
 	}
 	if ((nDevPresent <= 0))
 	{
-//		HandleError(ERR_DETECT);
+		HandleError(ERR_DETECT);
 		while(1);
 	};
 

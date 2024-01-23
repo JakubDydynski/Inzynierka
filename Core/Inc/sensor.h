@@ -10,7 +10,11 @@
 
 #include "vl53l0x_api.h"
 #include "stm32f4xx_hal.h"
-
+enum XNUCLEO53L0A1_dev_e{
+    XNUCLEO53L0A1_DEV_LEFT =  0,    //!< left satellite device P21 header : 'l'
+    XNUCLEO53L0A1_DEV_CENTER  =  1, //!< center (built-in) vl053 device : 'c"
+    XNUCLEO53L0A1_DEV_RIGHT=  2     //!< Right satellite device P22 header : 'r'
+};
 typedef enum
 {
 	LONG_RANGE = 0, /*!< Long range mode */

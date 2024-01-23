@@ -31,7 +31,6 @@
 #include "dcc_auto.h"
 
 #include <string.h>
-#include "X-NUCLEO-53L0A1.h"
 #include "vl53l0x_api.h"
 #include "sensor.h"
 #include <limits.h>
@@ -48,34 +47,6 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-
-/**
- * @defgroup Configuration Static configuration
- * @{
- */
-#define HAVE_ALARM_DEMO 0
-
-/** Time the initial 53L0 message is shown at power up */
-#define WelcomeTime 660
-
-/** Time the initial 53L0 message is shown at power up */
-#define ModeChangeDispTime  500
-
-/**
- * Time considered as  a "long push" on push button
- */
-#define PressBPSwicthTime   1000
-
-/** @}  *//* config group */
-
-#define B1_Pin GPIO_PIN_13
-#define B1_GPIO_Port GPIOC
-
-/**
- * @defgroup ErrCode Errors code shown on display
- * @{
- */
-#define ERR_DEMO_RANGE_MULTI   2
 
 /** }@} *//* defgroup ErrCode */
 
@@ -107,8 +78,6 @@ VL53L0X_RangingMeasurementData_t RangingMeasurementData[2];
 
 int UseSensorsMask = (1 << XNUCLEO53L0A1_DEV_CENTER)
 		| (1 << XNUCLEO53L0A1_DEV_LEFT);
-
-char WelcomeMsg[] = "Hi I am Ranging VL53L0X mcu " MCU_NAME "\n";
 
 /* USER CODE END PV */
 
@@ -265,33 +234,7 @@ int BSP_GetPushButton(void)
 	return state;
 }
 
-/**
- * When button is already pressed it waits for user to release it.
- * if button remains pressed for a given time it returns true.
- * This is used to detect mode switch by long press on blue Push Button
- *
- * As soon as time is elapsed -rb- is displayed to let user know the mode
- * switch is taken into account
- *
- * @return True if button remains pressed more than specified time
- */
-int PusbButton_WaitUnPress(void)
-{
-	uint32_t TimeStarted;
-	TimeStarted = HAL_GetTick();
-	while (!BSP_GetPushButton())
-	{
-		; /* debounce */
-		if (HAL_GetTick() - TimeStarted > PressBPSwicthTime)
-		{
-			XNUCLEO53L0A1_SetDisplayString(" rb ");
-		}
-	}
-	return HAL_GetTick() - TimeStarted > PressBPSwicthTime;
-
-}
-
-void OwnDemo(int UseSensorsMask, RangingConfig_e rangingConfig)
+void OwnDemo(int UseSensorsMask)
 {
 	int status;
 	int i;
@@ -305,7 +248,7 @@ void OwnDemo(int UseSensorsMask, RangingConfig_e rangingConfig)
 		if (status == VL53L0X_ERROR_NONE)
 			status = VL53L0X_StartMeasurement(&VL53L0XDevs[i]);
 		if (status != VL53L0X_ERROR_NONE)
-//			HandleError(ERR_DEMO_RANGE_MULTI);
+//			HandleError(2);
 			while(1);
 	}
 }
@@ -331,7 +274,6 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-//  SystemClock_Config();
   __HAL_RCC_PWR_CLK_ENABLE();
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
   /* USER CODE END Init */
@@ -363,13 +305,25 @@ int main(void)
 	NVIC_SetPriority(DCC_PktAs_IRQn, 1);
 	NVIC_EnableIRQ(DCC_PktAs_IRQn);
 
-
-	HAL_Delay(WelcomeTime);
 	/* Set VL53L0X API trace level */
 //	VL53L0X_trace_config(NULL, TRACE_MODULE_NONE, TRACE_LEVEL_NONE, TRACE_FUNCTION_NONE); // No Trace
 //	VL53L0X_trace_config(NULL,TRACE_MODULE_ALL, TRACE_LEVEL_ALL, TRACE_FUNCTION_ALL); // Full trace
 	InitSensors(&hi2c1, RangingConfig);
-	OwnDemo(UseSensorsMask, LONG_RANGE);
+	/* offset, xtalk calibrations below*/
+//	uint32_t pOffsetMicroMeter[2] = {0};
+//	uint32_t measured_distanceoffset = 20*10; //150mm
+//
+//	uint32_t measured_distance0 = 43*10; //mm
+//	uint32_t measured_distance1 = 72*10; //mm
+//	uint32_t pXTalkCompensationRateMegaCps[2] = {0};
+//	volatile VL53L0X_Error err = VL53L0X_PerformXTalkCalibration(&VL53L0XDevs[0], measured_distance0, &pXTalkCompensationRateMegaCps[0]);
+//	volatile VL53L0X_Error err0 = VL53L0X_PerformOffsetCalibration(&VL53L0XDevs[1], measured_distance1, &pOffsetMicroMeter[1]);
+//	char s[10];
+//	sprintf(s, "offset calib passed\r\n");
+//	con_putstr(s);
+//	HAL_Delay(5000);
+//	volatile VL53L0X_Error err2 = VL53L0X_PerformXTalkCalibration(&VL53L0XDevs[1], measured_distance1, &pXTalkCompensationRateMegaCps[1]);
+	OwnDemo(UseSensorsMask);
 	HAL_TIM_Base_Start_IT(&htim10);
 	HAL_TIM_Base_Start_IT(&htim11);
 	// trace_printf("%d,%u,%d,%d,%d\n", VL53L0XDevs[i].Id, TimeStamp_Get(), RangingMeasurementData.RangeStatus, RangingMeasurementData.RangeMilliMeter, RangingMeasurementData.SignalRateRtnMegaCps);
@@ -636,7 +590,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				}
 			}
 		}
-    // trace_printf("%d",calculatePWM(RangingMeasurementData[0].RangeMilliMeter, RangingMeasurementData[1].RangeMilliMeter));
 	}
 	else if (htim == &htim11)
 	{

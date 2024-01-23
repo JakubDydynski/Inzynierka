@@ -5,9 +5,7 @@
  *      Author: Jakub
  */
 #include "algorithm.h"
-#include "X-NUCLEO-53L0A1.h"
 #include "vl53l0x_api.h"
-#include "math.h"
 #include "stdint.h"
 extern VL53L0X_RangingMeasurementData_t RangingMeasurementData[2];
 
@@ -38,8 +36,8 @@ struct sensor_alg_cfg
 };
 
 const struct sensor_alg_cfg s_cfg[] = {
-		{330, 45},
-		{400, 80}
+		{380, 50},
+		{320, 70}
 };
 
 _Bool isInRange(uint8_t sensor)
