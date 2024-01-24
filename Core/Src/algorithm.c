@@ -29,7 +29,10 @@ struct sensor_alg_cfg s_cfg[SENSOR_NUM] = {
 
 _Bool isInRange(uint8_t sensor)
 {
-  return RangingMeasurementData[sensor].RangeMilliMeter < s_cfg[sensor].range;
+  _Bool ret = 1;
+  ret &= RangingMeasurementData[sensor].RangeMilliMeter < s_cfg[sensor].range; // check in range
+  ret &= RangingMeasurementData[sensor].SignalRateRtnMegaCps > 88000; // check signal rate is sufficient
+  return ret;
 }
 
 int calcStep(uint8_t sensor)
