@@ -13,7 +13,7 @@ static void autorun_exec(void)
 {
 	// set state
 	const struct autostep_ *sp = &autopgm[curr_step];
-	if(sp->itof == 0)
+	if(sp->idtof >= SENSOR_NUM)
 	{
 		curr_step_time = 0;
 	}
@@ -21,13 +21,6 @@ static void autorun_exec(void)
 	loco[l].rev = sp->rev;
 	loco[l].dspeed = sp->speed;
 	loco[l].fun.w[0] = sp->f0_28;
-//	if (sp->itof != 0)
-//	{
-//		if (isInRange(sp->itof))
-//		{
-//			loco[l].dspeed = calcStep(sp->itof); // zakładamy, że użytkownik podał dobry kierunek
-//		}
-//	}
 }
 
 void autorun_start(void)
@@ -52,7 +45,7 @@ void autorun(void)
 
 	if (autorun_active && ++curr_step_time == autopgm[curr_step].stime)
 	{
-		if ( autopgm[curr_step].itof != 0)
+		if ( autopgm[curr_step].idtof < SENSOR_NUM)
 		{
 			curr_step_time = 0;
 		}
@@ -67,7 +60,7 @@ void autorun(void)
 		else
 			autorun_exec();
 	}
-	else if (autorun_active && autopgm[curr_step].itof != 0)
+	else if (autorun_active && autopgm[curr_step].idtof < SENSOR_NUM)
 	{
 		itof_flag = 1;
 	}

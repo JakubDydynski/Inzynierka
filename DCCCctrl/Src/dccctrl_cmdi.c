@@ -10,6 +10,7 @@
 #include "dcc_auto.h"
 #include "config.h"
 #include "flash.h"
+#include "algorithm.h"
 #ifdef LCONCMD
 #include "lconcmd.h"
 #endif
@@ -841,7 +842,7 @@ static void print_ar(uint8_t i)
 	char s[80];
 	sprintf(s, "%2d %3d s: %2d %s %3d %08" PRIx32 " %2d\r\n",
 		i, autopgm[i].stime, autopgm[i].locnum, autopgm[i].rev ? "rev" : "fwd",
-		autopgm[i].speed, autopgm[i].f0_28, autopgm[i].itof);
+		autopgm[i].speed, autopgm[i].f0_28, autopgm[i].idtof);
 	con_putstr(s);
 }
 // define autorun step
@@ -854,7 +855,7 @@ static uint8_t cmd_ardef(void)
 	_Bool rev = stack_pop();
 	uint8_t speed = stack_pop();
 	uint32_t fun = stack_pop();
-	uint8_t itof = stack_pop();
+	uint8_t idtof = stack_pop();
 	
 	if (pos < NAUTOSTEPS && l < NDEVICES)
 	{
@@ -863,7 +864,7 @@ static uint8_t cmd_ardef(void)
 		autopgm[pos].rev = rev;
 		autopgm[pos].speed = speed;
 		autopgm[pos].f0_28 = fun;
-		autopgm[pos].itof = itof;
+		autopgm[pos].idtof = idtof;
 		print_ar(pos);
 	}
 	return 0;
@@ -914,6 +915,27 @@ static uint8_t cmd_arlist(void)
 	char s[30];
 	sprintf(s, "step: %d, time: %d, seccnt: %d\r\n", curr_step, curr_step_time, seccnt);
 	con_putstr(s);
+	return 0;
+}
+extern struct sensor_alg_cfg s_cfg[SENSOR_NUM];
+static uint8_t cmd_tofdef(void)
+{
+	//range, stop distance, max, tofid
+	uint8_t tof_id = stack_pop();
+	s_cfg[tof_id].max_step = stack_pop();
+	s_cfg[tof_id].stop_distance = stack_pop();
+	s_cfg[tof_id].range = stack_pop();
+	return 0;
+}
+static uint8_t cmd_toflist(void)
+{
+	for (uint8_t i = 0; i < SENSOR_NUM; i++)
+	{
+		char s[30];
+		sprintf(s, "%2d r: %3d sd: %2d ms: %2d \r\n",
+		i, s_cfg[i].range, s_cfg[i].stop_distance, s_cfg[i].max_step);
+		con_putstr(s);
+	}
 	return 0;
 }
 
@@ -1083,6 +1105,8 @@ const struct cmd_ cmdtab[] = {
 	{"spg", 	cmd_speedgroup},
 	{"start", 	cmd_start},
 	{"stop", 	cmd_stop},
+	{"tofdef",  cmd_tofdef},
+	{"tofl",    cmd_toflist},
 #ifdef LCONCMD
 	{"tltn",	cmd_tltn},
 	{"tt", 		cmd_ttest},

@@ -22,33 +22,20 @@ extern VL53L0X_RangingMeasurementData_t RangingMeasurementData[2];
 //3 0
 // we miss 1 dspeed bcs of stop distance
 // y = b - a(x-coś)
-#define MAX_STEP 20
-#define STOP_DISTANCE 55 
-#define SENSOR_RANGE 400 
-#define SENSOR (sensor-1)
-#define CALC_STEP(distance)	(MAX_STEP - (s_cfg[SENSOR].range - (distance - s_cfg[SENSOR].stop_distance))/(s_cfg[SENSOR].range/MAX_STEP))
-#define GET_DISTANCE(sensor) RangingMeasurementData[SENSOR].RangeMilliMeter
-
-struct sensor_alg_cfg
-{
-	uint16_t range;
-	uint16_t stop_distance;
-};
-
-const struct sensor_alg_cfg s_cfg[] = {
-		{380, 50},
-		{320, 70}
+struct sensor_alg_cfg s_cfg[SENSOR_NUM] = {
+	{380, 50, 20},
+	{320, 70, 20}
 };
 
 _Bool isInRange(uint8_t sensor)
 {
-	return GET_DISTANCE(sensor) < s_cfg[SENSOR].range ? 1 : 0;
+  return RangingMeasurementData[sensor].RangeMilliMeter < s_cfg[sensor].range;
 }
-uint16_t calc_pos = 0;
-uint16_t step;
+
 int calcStep(uint8_t sensor)
 {
-	calc_pos = GET_DISTANCE(sensor);
-	step = CALC_STEP(calc_pos);
-    return step;
+  uint16_t distance = RangingMeasurementData[sensor].RangeMilliMeter;
+  uint16_t step = (s_cfg[sensor].max_step - (s_cfg[sensor].range - (distance -
+  s_cfg[sensor].stop_distance))/(s_cfg[sensor].range/s_cfg[sensor].max_step));
+  return step;
 }

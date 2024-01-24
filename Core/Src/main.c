@@ -600,9 +600,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			loco[l].rev = sp->rev;
 			loco[l].dspeed = sp->speed;
 			loco[l].fun.w[0] = sp->f0_28;
-			if (isInRange(sp->itof))
+			if (isInRange(sp->idtof))
 			{
-				loco[l].dspeed = calcStep(sp->itof);
+				loco[l].dspeed = calcStep(sp->idtof);
 			}
 
 		}
