@@ -15,6 +15,17 @@
  *
  ******************************************************************************
  */
+//#define VL53L1
+#ifndef VL53L1
+	#ifndef VL53L0
+		#error Define one sensor driver
+	#endif
+#else
+	#ifdef VL53L0
+		#error Defined two drivers
+	#endif
+#endif
+
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -30,12 +41,14 @@
 #include "dcc_tx.h"
 #include "dcc_auto.h"
 
-#include <string.h>
 #include "vl53l0x_api.h"
 #include "sensor.h"
 #include <limits.h>
 #include "auxilary.h"
 #include "algorithm.h"
+
+#include "VL53L1X_API.h"
+#include "VL53l1X_calibration.h"
 
 /* USER CODE END Includes */
 
@@ -48,13 +61,27 @@
 /* USER CODE BEGIN PD */
 
 
-/** }@} *//* defgroup ErrCode */
+
 
 #define BSP_BP_PORT GPIOC
 #define BSP_BP_PIN  GPIO_PIN_13
 #define debug_printf    trace_printf
 #define debug_printff    trace_printff
-// #define debug_printf    uart_printf_light
+uint16_t	dev=0x52;
+int status=0;
+volatile int IntCount;
+#define isInterrupt 1 /* If isInterrupt = 1 then device working in interrupt mode, else device working in polling mode */
+uint8_t byteData;
+uint16_t wordData;
+uint8_t ToFSensor = 1; // 0=Left, 1=Center(default), 2=Right
+uint16_t Distance;
+uint16_t SignalRate;
+uint16_t AmbientRate;
+uint16_t SpadNum;
+uint8_t RangeStatus;
+uint8_t dataReady;
+int16_t offset;
+uint16_t xtalk;
 
 /* USER CODE END PD */
 
@@ -78,6 +105,8 @@ VL53L0X_RangingMeasurementData_t RangingMeasurementData[2];
 
 int UseSensorsMask = (1 << XNUCLEO53L0A1_DEV_CENTER)
 		| (1 << XNUCLEO53L0A1_DEV_LEFT);
+int ExitWithLongPress;
+RangingConfig_e RangingConfig = HIGH_ACCURACY;
 
 /* USER CODE END PV */
 
@@ -234,25 +263,6 @@ int BSP_GetPushButton(void)
 	return state;
 }
 
-void OwnDemo(int UseSensorsMask)
-{
-	int status;
-	int i;
-	for (i = 0; i < 2; i++)
-	{
-		if (!VL53L0XDevs[i].Present)
-			continue;
-
-		status = VL53L0X_SetDeviceMode(&VL53L0XDevs[i],
-		VL53L0X_DEVICEMODE_CONTINUOUS_RANGING);
-		if (status == VL53L0X_ERROR_NONE)
-			status = VL53L0X_StartMeasurement(&VL53L0XDevs[i]);
-		if (status != VL53L0X_ERROR_NONE)
-//			HandleError(2);
-			while(1);
-	}
-}
-
 /* USER CODE END 0 */
 
 /**
@@ -262,9 +272,6 @@ void OwnDemo(int UseSensorsMask)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
-	int ExitWithLongPress;
-	RangingConfig_e RangingConfig = HIGH_ACCURACY;
 
   /* USER CODE END 1 */
 
@@ -305,28 +312,17 @@ int main(void)
 	NVIC_SetPriority(DCC_PktAs_IRQn, 1);
 	NVIC_EnableIRQ(DCC_PktAs_IRQn);
 
-	/* Set VL53L0X API trace level */
-//	VL53L0X_trace_config(NULL, TRACE_MODULE_NONE, TRACE_LEVEL_NONE, TRACE_FUNCTION_NONE); // No Trace
-//	VL53L0X_trace_config(NULL,TRACE_MODULE_ALL, TRACE_LEVEL_ALL, TRACE_FUNCTION_ALL); // Full trace
-	InitSensors(&hi2c1, RangingConfig);
-	/* offset, xtalk calibrations below*/
-//	uint32_t pOffsetMicroMeter[2] = {0};
-//	uint32_t measured_distanceoffset = 20*10; //150mm
-//
-//	uint32_t measured_distance0 = 43*10; //mm
-//	uint32_t measured_distance1 = 72*10; //mm
-//	uint32_t pXTalkCompensationRateMegaCps[2] = {0};
-//	volatile VL53L0X_Error err = VL53L0X_PerformXTalkCalibration(&VL53L0XDevs[0], measured_distance0, &pXTalkCompensationRateMegaCps[0]);
-//	volatile VL53L0X_Error err0 = VL53L0X_PerformOffsetCalibration(&VL53L0XDevs[1], measured_distance1, &pOffsetMicroMeter[1]);
-//	char s[10];
-//	sprintf(s, "offset calib passed\r\n");
-//	con_putstr(s);
-//	HAL_Delay(5000);
-//	volatile VL53L0X_Error err2 = VL53L0X_PerformXTalkCalibration(&VL53L0XDevs[1], measured_distance1, &pXTalkCompensationRateMegaCps[1]);
+#ifdef VL53L0
+	InitSensorsL0(&hi2c1, RangingConfig);
 	OwnDemo(UseSensorsMask);
+#endif
+#ifdef VL53L1
+	status = InitSensorsL1(dev);
+	status = StartSensorsL1(dev);
+#endif
+
 	HAL_TIM_Base_Start_IT(&htim10);
 	HAL_TIM_Base_Start_IT(&htim11);
-	// trace_printf("%d,%u,%d,%d,%d\n", VL53L0XDevs[i].Id, TimeStamp_Get(), RangingMeasurementData.RangeStatus, RangingMeasurementData.RangeMilliMeter, RangingMeasurementData.SignalRateRtnMegaCps);
 	
   /* USER CODE END 2 */
 
@@ -561,6 +557,35 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	{
 		for (int i = 0; i < 2; i++)
 		{
+#ifdef VL53L1
+			status = VL53L1X_CheckForDataReady(dev + (i+1)*2, &dataReady);
+			if(dataReady)
+			{
+				dataReady = 0;
+				  status = VL53L1X_GetRangeStatus(dev + (i+1)*2, &RangeStatus);
+				  status = VL53L1X_GetDistance(dev + (i+1)*2, &Distance);
+				  status = VL53L1X_GetSignalRate(dev + (i+1)*2, &SignalRate);
+				  status = VL53L1X_GetAmbientRate(dev + (i+1)*2, &AmbientRate);
+				  status = VL53L1X_GetSpadNb(dev + (i+1)*2, &SpadNum);
+				  status = VL53L1X_ClearInterrupt(dev + (i+1)*2); /* clear interrupt has to be called to enable next interrupt*/
+				  RangingMeasurementData[i].RangeMilliMeter = Distance;
+				  RangingMeasurementData[i].SignalRateRtnMegaCps = SignalRate;
+				 const struct autostep_ *sp = &autopgm[curr_step];
+				 if(itof_flag)
+				 {
+					uint8_t l = sp->locnum;
+					loco[l].rev = sp->rev;
+					loco[l].dspeed = sp->speed;
+					loco[l].fun.w[0] = sp->f0_28;
+					if (isInRange(sp->idtof))
+					{
+						loco[l].dspeed = calcStep(sp->idtof);
+					}
+
+				 }
+			}
+#endif
+#ifdef VL53L0
 			if (!VL53L0XDevs[i].Present)
 				continue;
 			uint8_t isReady = 0;
@@ -579,33 +604,29 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 					if (status == VL53L0X_ERROR_NONE)
 						Sensor_SetNewRange(&VL53L0XDevs[i],
 								&RangingMeasurementData[i]);
-
-//					trace_printf("%d,%d,%d\n", VL53L0XDevs[i].Id, RangingMeasurementData[i].RangeStatus, RangingMeasurementData[i].RangeMilliMeter);
-					// char tab[6];
-					// sprintf(tab, "%d%d%d",VL53L0XDevs[i].Id, RangingMeasurementData[i].RangeStatus + 48, RangingMeasurementData[i].RangeMilliMeter);
-					// debug_printff(tab, 10);
 				} else
 				{
 					__NOP();
 				}
 			}
+#endif
 		}
 	}
 	else if (htim == &htim11)
 	{
-		const struct autostep_ *sp = &autopgm[curr_step];
-		if(itof_flag)
-		{
-			uint8_t l = sp->locnum;
-			loco[l].rev = sp->rev;
-			loco[l].dspeed = sp->speed;
-			loco[l].fun.w[0] = sp->f0_28;
-			if (isInRange(sp->idtof))
-			{
-				loco[l].dspeed = calcStep(sp->idtof);
-			}
-
-		}
+//		const struct autostep_ *sp = &autopgm[curr_step];
+//		if(itof_flag)
+//		{
+//			uint8_t l = sp->locnum;
+//			loco[l].rev = sp->rev;
+//			loco[l].dspeed = sp->speed;
+//			loco[l].fun.w[0] = sp->f0_28;
+//			if (isInRange(sp->idtof))
+//			{
+//				loco[l].dspeed = calcStep(sp->idtof);
+//			}
+//
+//		}
 	}
 }
 

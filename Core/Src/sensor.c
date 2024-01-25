@@ -4,9 +4,11 @@
  *  Created on: Oct 21, 2023
  *      Author: Jakub
  */
-#include "vl53l0x_api.h"
-#include "stm32f4xx_hal.h"
 #include "sensor.h"
+#include "stm32f4xx_hal.h"
+#include "vl53l0x_api.h"
+#include "VL53L1X_API.h"
+#include "VL53l1X_calibration.h"
 /**
  * @defgroup ErrCode Errors code shown on display
  * @{
@@ -51,15 +53,7 @@ VL53L0X_Dev_t VL53L0XDevs[2] =
     { .Id = XNUCLEO53L0A1_DEV_CENTER, .DevLetter = 'c', .I2cDevAddr = 0x52 }, 
 };
 
-static void SetI2C(I2C_HandleTypeDef *hi2c)
-{
-    for(int i = 0; i < sizeof(VL53L0XDevs)/sizeof(VL53L0XDevs[0]); i++)
-    {
-        VL53L0XDevs[i].I2cHandle = hi2c;
-    }
-}
-
-static int SetShutdownPin(int DevNo, GPIO_PinState state)
+int SetShutdownPin(int DevNo, GPIO_PinState state)
 {
 	switch (DevNo)
 	{
@@ -233,15 +227,77 @@ void Sensor_SetNewRange(VL53L0X_Dev_t *pDev,
 		pDev->LeakyFirst = 1;
 	}
 }
+int InitSensorsL1(uint16_t dev)
+{
+	int status;
+	uint8_t sensorState=0;
+	int i;
+	for (i = 0; i < 2; i++)
+			(void)SetShutdownPin(i, 0);
+	for (i = 0; i < 2; i++)
+	{
 
-void InitSensors(I2C_HandleTypeDef *hi2c, RangingConfig_e rangingConfig)
+		(void)SetShutdownPin(i, 0);
+		HAL_Delay(2);
+		(void)SetShutdownPin(i, 1);
+		HAL_Delay(2);
+		status = VL53L1X_SetI2CAddress(dev, dev + (i+1)*2);
+
+	/* Those basic I2C read functions can be used to check your own I2C functions */
+//		status = VL53L1_RdByte(dev + (i+1)*2, 0x010F, &byteData);
+//		printf("VL53L1X Model_ID: %X\n", byteData);
+//		status = VL53L1_RdByte(dev + (i+1)*2, 0x0110, &byteData);
+//		printf("VL53L1X Module_Type: %X\n", byteData);
+//		status = VL53L1_RdWord(dev + (i+1)*2, 0x010F, &wordData);
+//		printf("VL53L1X: %X\n", wordData);
+		while(sensorState==0){
+			status = VL53L1X_BootState(dev + (i+1)*2, &sensorState);
+		HAL_Delay(2);
+		}
+
+		/* This function must to be called to initialize the sensor with the default setting  */
+		status = VL53L1X_SensorInit(dev + (i+1)*2);
+		/* Optional functions to be used to change the main ranging parameters according the application requirements to get the best ranging performances */
+		status = VL53L1X_SetDistanceMode(dev + (i+1)*2, 2); /* 1=short, 2=long */
+		/*timinig budget doesnt play big role */
+		status = VL53L1X_SetTimingBudgetInMs(dev + (i+1)*2, 100); /* in ms possible values [20, 50, 100, 200, 500] */
+		status = VL53L1X_SetInterMeasurementInMs(dev + (i+1)*2, 100); /* in ms, IM must be > = TB */
+		  status = VL53L1X_SetOffset(dev+4,20); /* offset compensation in mm */
+		status = VL53L1X_SetROI(dev + (i+1)*2, 4, 4); /* minimum ROI 4,4 */
+		//	status = VL53L1X_CalibrateOffset(dev, 140, &offset); /* may take few second to perform the offset cal*/
+		//	status = VL53L1X_CalibrateXtalk(dev, 1000, &xtalk); /* may take few second to perform the xtalk cal */
+	}
+
+//	status = VL53L1X_GetXtalk(dev+4, &xtalk); /* may take few second to perform the xtalk cal */
+//	status = VL53L1X_CalibrateXtalk(dev+4, 800, &xtalk); /* may take few second to perform the xtalk cal */
+	/*xtalk is about 12208/12085 in above measurement*/
+//	status = VL53L1X_GetXtalk(dev+4, &xtalk); /* may take few second to perform the xtalk cal */
+//	status = VL53L1X_SetXtalk(dev+4, 12100); /* may take few second to perform the xtalk cal */
+	return status;
+}
+int StartSensorsL1(uint16_t dev)
+{
+	int i;
+	int status;
+	for (i = 0; i < 2; i++)
+	{
+		status = VL53L1X_StartRanging(dev + (i+1)*2);   /* This function has to be called to enable the ranging */
+
+	}
+	return status;
+}
+void InitSensorsL0(I2C_HandleTypeDef *hi2c, RangingConfig_e rangingConfig)
 {
 	int i;
 	uint16_t Id = 0xEEAA;
 	int status;
 	int FinalAddress;
 	nDevPresent = 0;
-    SetI2C(hi2c);
+
+    for(int i = 0; i < sizeof(VL53L0XDevs)/sizeof(VL53L0XDevs[0]); i++)
+    {
+        VL53L0XDevs[i].I2cHandle = hi2c;
+    }
 
 	/* Reset all */
 	for (i = 0; i < 3; i++)
@@ -327,4 +383,38 @@ void InitSensors(I2C_HandleTypeDef *hi2c, RangingConfig_e rangingConfig)
 	};
 
     SetupSingleShot(rangingConfig); // calibration
+
+	/* offset, xtalk calibrations below*/
+//	uint32_t pOffsetMicroMeter[2] = {0};
+//	uint32_t measured_distanceoffset = 20*10; //150mm
+//
+//	uint32_t measured_distance0 = 43*10; //mm
+//	uint32_t measured_distance1 = 72*10; //mm
+//	uint32_t pXTalkCompensationRateMegaCps[2] = {0};
+//	volatile VL53L0X_Error err = VL53L0X_PerformXTalkCalibration(&VL53L0XDevs[0], measured_distance0, &pXTalkCompensationRateMegaCps[0]);
+//	volatile VL53L0X_Error err0 = VL53L0X_PerformOffsetCalibration(&VL53L0XDevs[1], measured_distance1, &pOffsetMicroMeter[1]);
+//	char s[10];
+//	sprintf(s, "offset calib passed\r\n");
+//	con_putstr(s);
+//	HAL_Delay(5000);
+//	volatile VL53L0X_Error err2 = VL53L0X_PerformXTalkCalibration(&VL53L0XDevs[1], measured_distance1, &pXTalkCompensationRateMegaCps[1]);
+}
+
+void OwnDemo(int UseSensorsMask)
+{
+	int status;
+	int i;
+	for (i = 0; i < 2; i++)
+	{
+		if (!VL53L0XDevs[i].Present)
+			continue;
+
+		status = VL53L0X_SetDeviceMode(&VL53L0XDevs[i],
+		VL53L0X_DEVICEMODE_CONTINUOUS_RANGING);
+		if (status == VL53L0X_ERROR_NONE)
+			status = VL53L0X_StartMeasurement(&VL53L0XDevs[i]);
+		if (status != VL53L0X_ERROR_NONE)
+//			HandleError(2);
+			while(1);
+	}
 }

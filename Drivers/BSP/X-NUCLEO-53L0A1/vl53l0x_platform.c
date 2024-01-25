@@ -1,4 +1,4 @@
-//?????#include "hal.h"
+
 #include "vl53l0x_platform.h"
 #include "vl53l0x_api.h"
 
@@ -43,7 +43,7 @@ while(0)
 #   define  VL53L0X_OsDelay(...) (void)0
 #endif
 
-
+#ifdef VL53L0
 uint8_t _I2CBuffer[64];
 
 int _I2CWrite(VL53L0X_DEV Dev, uint8_t *pdata, uint32_t count) {
@@ -71,6 +71,10 @@ int _I2CRead(VL53L0X_DEV Dev, uint8_t *pdata, uint32_t count) {
     }
     return status;
 }
+#else
+extern uint8_t _I2CBuffer[256];
+#endif
+
 
 // the ranging_sensor_comms.dll will take care of the page selection
 VL53L0X_Error VL53L0X_WriteMulti(VL53L0X_DEV Dev, uint8_t index, uint8_t *pdata, uint32_t count) {

@@ -21,8 +21,11 @@ typedef enum
 	HIGH_SPEED = 1, /*!< High speed mode */
 	HIGH_ACCURACY = 2, /*!< High accuracy mode */
 } RangingConfig_e;
-
-void InitSensors(I2C_HandleTypeDef *hi2c,  RangingConfig_e rangingConfig);
+int SetShutdownPin(int DevNo, GPIO_PinState state);
+int InitSensorsL1(uint16_t dev);
+int StartSensorsL1(uint16_t dev);
+void InitSensorsL0(I2C_HandleTypeDef *hi2c,  RangingConfig_e rangingConfig);
+void OwnDemo(int UseSensorsMask);
 void HandleError(int err);
 void Sensor_SetNewRange(VL53L0X_Dev_t *pDev,
 		VL53L0X_RangingMeasurementData_t *pRange);

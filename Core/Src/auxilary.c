@@ -10,7 +10,7 @@
 void Check_I2c_Channel(I2C_HandleTypeDef* channel)
 {
 	    HAL_StatusTypeDef result;
-	    uint8_t r = 0 , nr = 0;
+	    volatile uint8_t r = 0 , nr = 0;
 		uint8_t i;
 		for (i=1; i<128; i++)
 		{
